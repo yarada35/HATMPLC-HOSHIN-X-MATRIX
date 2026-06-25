@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-import plotly.graph_objects as go
 
 # Set page layout
 st.set_page_config(page_title="HATMPLC Hoshin Dashboard", layout="wide")
@@ -70,7 +69,7 @@ with right_col:
     owners = [
         {"dept": "Purchase & PIQA", "task": "የጥሬ ዕቃ አቅርቦትን ማረጋጋትና ጥራትን መቆጣጠር (1.1.4)", "status": "በእቅዱ መሠረት (ON TRACK)", "color": "green"},
         {"dept": "Plant Engineering (PE)", "task": "የማምረቻ መሣሪያዎችን ዝግጁነት ከ91.68% ወደ 93.28% ማሳደግ (2.3.2)", "status": "በእቅዱ መሠረት (ON TRACK)", "color": "green"},
-        {"dept": "Production Dept (PD)", "task": "የዕለት ምርታማነትን ወደ 37.3 ቶን ማሳደግ (2.3.4)", "status": "ትኩረት ያስፈልገዋል (AT RISK)", "color": "orange"},
+        {"dept": "Production Dept (PD)", "task": "የዕለት ምርታማነትን ወደ 37.3 ቶን ማሳደግ (2.3.4)", "status": "ትকুረት ያስፈልገዋል (AT RISK)", "color": "orange"},
         {"dept": "Finance & Top Mgt", "task": "የውጭ ምንዛሪ ግኝትን ማመቻቸትና ወጪ መቆጣጠር (1.1.3)", "status": "በእቅዱ መሠረት (ON TRACK)", "color": "green"},
         {"dept": "PMITS", "task": "የአሰራር ስርዓቶችን ቀጣይነት ማረጋገጥና አፈጻጸም ማሳደግ (2.1.1)", "status": "በእቅዱ መሠረት (ON TRACK)", "color": "green"},
     ]
@@ -104,8 +103,3 @@ matrix_df = pd.DataFrame([
 
 st.dataframe(matrix_df.set_index("ስትራቴጂካዊ ፕሮጀክቶች (Projects)"), use_container_width=True)
 st.caption("* ማስታወሻ: Strong (3) = ጠንካራ ትስስር | Medium (1) = መካከለኛ ትስስር | None (0) = ትስስር የሌለው")
-
-app.py
-app.py
-Loading app.py.
-Displaying app.py.
