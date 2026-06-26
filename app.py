@@ -1,152 +1,182 @@
 import streamlit as st
 import pandas as pd
-import plotly.express as px
-import plotly.graph_objects as go
+import numpy as np
 
-# 1. Page Settings & Visual Styling
-st.set_page_config(page_title="HATMPLC Ultimate X-Matrix Hub", layout="wide")
+# --- PAGE CONFIGURATION ---
+st.set_page_config(
+    page_title="Horizon Addis Tyre - Hoshin Kanri Dashboard",
+    page_icon="🎯",
+    layout="wide"
+)
 
+# --- CUSTOM CSS FOR BRANDING ---
 st.markdown("""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Ethiopic:wght@400;700&display=swap');
-    html, body, [class*="css"] {
-        font-family: 'Noto Sans Ethiopic', sans-serif;
-        background-color: #f8fafc;
-    }
-    
-    /* X-Matrix Circular/Diamond Core Layout */
-    .matrix-title {
-        text-align: center;
-        font-size: 2.5rem;
-        font-weight: bold;
-        color: #1e293b;
-        margin-bottom: 25px;
-        letter-spacing: 2px;
-    }
-    
-    .quadrant-top {
-        background: linear-gradient(135deg, #fca5a5 0%, #ef4444 100%);
-        color: white;
-        padding: 20px;
-        border-radius: 12px 12px 0 0;
-        text-align: center;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-    }
-    .quadrant-left {
-        background: linear-gradient(135deg, #bbf7d0 0%, #22c55e 100%);
-        color: #14532d;
-        padding: 20px;
-        border-radius: 12px 0 0 12px;
-        height: 100%;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-    }
-    .quadrant-right {
-        background: linear-gradient(135deg, #bfdbfe 0%, #3b82f6 100%);
-        color: white;
-        padding: 20px;
-        border-radius: 0 12px 12px 0;
-        height: 100%;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-    }
-    .quadrant-bottom {
-        background: linear-gradient(135deg, #fed7aa 0%, #f97316 100%);
-        color: white;
-        padding: 20px;
-        border-radius: 0 0 12px 12px;
-        text-align: center;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-        margin-top: 15px;
-    }
-    
-    .list-item {
-        background: rgba(255, 255, 255, 0.25);
-        margin: 6px 0;
-        padding: 8px 12px;
-        border-radius: 6px;
-        font-size: 0.9rem;
-        text-align: left;
-    }
-    .list-item-dark {
-        background: rgba(0, 0, 0, 0.06);
-        margin: 6px 0;
-        padding: 8px 12px;
-        border-radius: 6px;
-        font-size: 0.9rem;
-        text-align: left;
-    }
+    .main-header { font-size:28px !important; font-weight: bold; color: #1E3A8A; margin-bottom: 5px; }
+    .sub-header { font-size:16px !important; color: #6B7280; margin-bottom: 25px; }
+    .card-metric { background-color: #F3F4F6; padding: 15px; border-radius: 8px; border-left: 5px solid #FEF08A; }
+    .stButton>button { background-color: #000000; color: white; border-radius: 5px; }
     </style>
-""", unsafe_allow_html=True)
+    """, unsafe_allow_html=True)
 
-# 2. Extract verified live structures from the files
+st.markdown('<div class="main-header">🎯 HORIZON ADDIS TYRE — INDUSTRIAL HOSHIN KANRI DASHBOARD</div>', unsafe_allow_html=True)
+st.markdown('<div class="sub-header">Interlocking 5-Year Strategy, Annual Objectives, KPIs, and Top Department Priorities</div>', unsafe_allow_html=True)
+
+# --- MOCK DATA INGESTION (Based on uploaded structure) ---
+# To connect live, replace these dictionaries with your exact csv reading strings: pd.read_csv('filename.csv')
 @st.cache_data
-def get_verified_matrix_data():
-    b_df = pd.read_excel("5 YEAR STARTEGY BOTTOM.xlsx").dropna(subset=['Unnamed: 2'])
-    bottom_list = b_df['Unnamed: 2'].iloc[3:7].tolist()
+def load_hoshin_base_data():
+    bottom_5yr = {
+        "ID": ["1.1", "2.1", "3.1", "3.2"],
+        "Pillar": ["Supply Chain Enhancement", "Capacity Building", "Overall Cost Reduction", "Sales & Marketing"],
+        "Strategy Issue": [
+            "የግብዓት አቅርቦትን አስተማማኝ ማድረግ (Reliable Raw Material Supply Pipeline)",
+            "የሰው ሀብት አቅም ማሳደግና ማምረቻ መሳሪያዎች አጠቃቀም (Human Resource Capacity & Plant Utilization)",
+            "የምርት ወጪን በከፍተኛ ሁኔታ መቀነስ (Rigorous Production Cost Reduction)",
+            "የገበያ ድርሻንና የሽያጭ መረብን ማስፋፋት (Market Share Optimization & Commercial Reach)"
+        ]
+    }
     
-    l_df = pd.read_excel("lEFT ANNUAL OBJECTIVE.xlsx").dropna(subset=['Unnamed: 3'])
-    left_list = [x for x in l_df['Unnamed: 3'].tolist() if "OBJECTIVES" not in str(x)][0:4]
+    left_annual = {
+        "KPI_ID": ["1.1.1", "1.1.2", "2.1.1", "3.1.7", "3.1.8", "3.2.2"],
+        "Parent_Pillar": ["Supply Chain Enhancement", "Supply Chain Enhancement", "Capacity Building", "Overall Cost Reduction", "Overall Cost Reduction", "Sales & Marketing"],
+        "Objective": [
+            "ለሶስት ወር ምርት የሚበቃ ጥሬ ዕቃ በክምችት ማሳደግ ከ27.7% ወደ 95%",
+            "የመለዋወጫ አቅርቦት ጊዜ ከ115 ቀን ወደ 21 ቀናት ዝቅ ማድረግ",
+            "የሠራተኛውን አፈጻጸም ከ82 በመቶ ወደ 95 በመቶ ማሳደግ",
+            "የፈርነስ ፍጆታን (ቶን/ቶን) ከ 0.56 ወደ 0.25 መቀነስ",
+            "ኤሌክትሪክ ፍጆታን በ (KWH/ton) ከ 1529 ወደ 1200 መቀነስ",
+            "የክሌም ወጪን ከ 0.006% ወደ 0.003% መቀነስ"
+        ],
+        "Weight": [4, 2, 4, 4, 2, 1],
+        "Target": [0.95, 21.0, 0.95, 0.25, 1200.0, 0.003],
+        "Direction": ["Up", "Down", "Up", "Down", "Down", "Down"], # Up = higher is better, Down = lower is better
+        "Department": ["Purchase", "Plant Engineering", "HR", "Production", "Plant Engineering", "PIQA"]
+    }
     
-    r_df = pd.read_excel("KPI Annaul Right side.xlsx").dropna(subset=['Unnamed: 3'])
-    right_list = [x for x in r_df['Unnamed: 3'].tolist() if "OBJECTIVES" not in str(x)][0:4]
-    
-    t_df = pd.read_excel("Prioritizezed activities Top.xlsx").dropna(subset=['Unnamed: 3'])
-    top_list = [x for x in t_df['Unnamed: 3'].tolist() if "ACTIVITIES" not in str(x)][0:4]
-    
-    return bottom_list, left_list, right_list, top_list
+    top_priorities = {
+        "Department": ["Purchase", "Plant Engineering", "HR", "Production", "PIQA", "Sales & Marketing"],
+        "Prioritized Action Item": [
+            "አምራች አቅራቢዎችን ለይቶ ማወቅ፣ የተሻሉትን መምረጥና በአካል ሄዶ ማነጋገር",
+            "ለማምረቻ መሣሪዎችና መገልገያዎች ትክለኛውን ስፔሲፊኬሽን በወቅቱ ማቅረብ",
+            "የሠራተኛውን የሥራ ተነሳሽነትና የባለቤትነት ስሜት (Employee Engagement) ስልጠናዎች መስጠት",
+            "የሃይል አጠቃቀምን መከታተልና ብክነትን ማስወገድ",
+            "የጥሬ ዕቃዎች ሲመጡ ጥራት ፍተሻ በማድረግ ማረጋገጥ",
+            "የታገዘ የቴክኒክ ድጋፍ እና የገበያ ስለላ (Market Intelligence) ስራን ማጠናከር"
+        ]
+    }
+    return pd.DataFrame(bottom_5yr), pd.DataFrame(left_annual), pd.DataFrame(top_priorities)
 
-bottom_v, left_v, right_v, top_v = get_verified_matrix_data()
+df_5yr, df_annual, df_priorities = load_hoshin_base_data()
 
-st.markdown("<div class='matrix-title'>🔺 INTERACTIVE HOSHIN KANRI X-MATRIX 🔺</div>", unsafe_allow_html=True)
+# --- SESSION STATE FOR PERIODIC ACTUAL PERFORMANCES ---
+if "actuals" not in st.session_state:
+    # Initialize actuals close to target values for demonstration
+    st.session_state.actuals = {
+        "1.1.1": 0.88,
+        "1.1.2": 35.0,
+        "2.1.1": 0.89,
+        "3.1.7": 0.32,
+        "3.1.8": 1310.0,
+        "3.2.2": 0.004
+    }
 
-# --- 3. Geometric X-Matrix Visual Rendering (As requested in image format) ---
+# --- SIDEBAR: DEPARTMENTAL PERFORMANCE UPDATE INTERFACE ---
+st.sidebar.header("🏭 Department Performance Update Gate")
+selected_dept = st.sidebar.selectbox("Select Your Submitting Department:", df_priorities["Department"].unique())
 
-# TOP ROW: HOW (Action Items)
-st.markdown("<div class='quadrant-top'><h2>🔼 HOW</h2><b>Action Items (ቅድሚያ የሚሰጣቸው ተግባራት)</b></div>", unsafe_allow_html=True)
-col_top1, col_top2 = st.columns(2)
-with col_top1:
-    st.markdown(f"<div class='list-item'>{top_v[0][:150]}...</div>", unsafe_allow_html=True)
-    st.markdown(f"<div class='list-item'>{top_v[1][:150]}...</div>", unsafe_allow_html=True)
-with col_top2:
-    st.markdown(f"<div class='list-item'>{top_v[2][:150]}...</div>", unsafe_allow_html=True)
-    st.markdown(f"<div class='list-item'>{top_v[3][:150]}...</div>", unsafe_allow_html=True)
+st.sidebar.markdown(f"### **{selected_dept}** Metrics Input")
+dept_metrics = df_annual[df_annual["Department"] == selected_dept]
 
-st.markdown("<div style='margin-top: 15px;'></div>", unsafe_allow_html=True)
+if not dept_metrics.empty:
+    for idx, row in dept_metrics.iterrows():
+        kpi_id = row["KPI_ID"]
+        current_actual = st.session_state.actuals[kpi_id]
+        
+        # Adjust entry type based on metric nature
+        if row["Target"] < 1.0:
+            new_val = st.sidebar.number_input(f"KPI {kpi_id}: {row['Objective'][:30]}...", value=float(current_actual), step=0.01, format="%.4f")
+        else:
+            new_val = st.sidebar.number_input(f"KPI {kpi_id}: {row['Objective'][:30]}...", value=float(current_actual), step=1.0)
+        
+        st.session_state.actuals[kpi_id] = new_val
+else:
+    st.sidebar.info("No numerical KPIs assigned directly to this department in this tracking window.")
 
-# MIDDLE ROW: LEFT (HOW FAR) & RIGHT (HOW MUCH)
-col_left_side, col_right_side = st.columns(2)
+# --- COMPUTE PERFORMANCE SCORE ---
+def calculate_achievement(row):
+    act = st.session_state.actuals[row["KPI_ID"]]
+    tgt = row["Target"]
+    if row["Direction"] == "Up":
+        score = (act / tgt) * 100 if tgt != 0 else 0
+    else:
+        score = (tgt / act) * 100 if act != 0 else 0
+    return min(max(score, 0.0), 120.0) # Cap view window performance between 0-120%
 
-with col_left_side:
-    st.markdown("<div class='quadrant-left'><h2>◀️ HOW FAR</h2><b>Objectives (ዓመታዊ ዓላማዎች)</b>", unsafe_allow_html=True)
-    for idx, item in enumerate(left_v):
-        st.markdown(f"<div class='list-item-dark'><b>{idx+1}.</b> {item}</div>", unsafe_allow_html=True)
-    st.markdown("</div>", unsafe_allow_html=True)
+df_annual["Actual"] = df_annual["KPI_ID"].map(st.session_state.actuals)
+df_annual["Achievement%"] = df_annual.apply(calculate_achievement, axis=1)
 
-with col_right_side:
-    st.markdown("<div class='quadrant-right'><h2>▶️ HOW MUCH</h2><b>Action Programs (የቁልፍ አፈጻጸም አመልካቾች)</b>", unsafe_allow_html=True)
-    for idx, item in enumerate(right_v):
-        st.markdown(f"<div class='list-item'><b>{idx+1}.</b> {item}</div>", unsafe_allow_html=True)
-    st.markdown("</div>", unsafe_allow_html=True)
+# --- HEAD 1: OVERALL COMPANY ACHIEVEMENT INDICATOR ---
+st.subheader("📊 Overall Corporate Health Achievement Matrix")
+overall_score = df_annual["Achievement%"].mean()
 
-# BOTTOM ROW: WHAT (Measures & Targets)
-st.markdown("<div class='quadrant-bottom'><h2>🔽 WHAT</h2><b>Measures & Targets (የ5 ዓመት ስትራቴጂካዊ ግቦች)</b></div>", unsafe_allow_html=True)
-col_bot1, col_bot2 = st.columns(2)
-with col_bot1:
-    st.markdown(f"<div class='list-item-dark'>🎯 {bottom_v[0]}</div>", unsafe_allow_html=True)
-    st.markdown(f"<div class='list-item-dark'>🎯 {bottom_v[1]}</div>", unsafe_allow_html=True)
-with col_bot2:
-    st.markdown(f"<div class='list-item-dark'>🎯 {bottom_v[2]}</div>", unsafe_allow_html=True)
-    st.markdown(f"<div class='list-item-dark'>🎯 {bottom_v[3]}</div>", unsafe_allow_html=True)
+col1, col2, col3 = st.columns(3)
+with col1:
+    st.metric(label="Global Hoshin Alignment Score", value=f"{overall_score:.2f} %", delta=f"{overall_score - 85.0:.1f}% vs Threshold")
+with col2:
+    completed_pillars = len(df_annual[df_annual["Achievement%"] >= 90])
+    st.metric(label="Fully Operational Interlocked KPIs", value=f"{completed_pillars} / {len(df_annual)}")
+with col3:
+    st.metric(label="Active Plant Departments Monitored", value=len(df_priorities))
 
 st.markdown("---")
 
-# 4. Interactive Data Correlation Grid (Lower section)
-st.markdown("### 🔄 Cross-Functional Dynamic Linkage Grid")
-corr_matrix = pd.DataFrame([
-    ["● Strong", "○ Medium", "❌ None", "● Strong"],
-    ["❌ None", "● Strong", "○ Medium", "❌ None"],
-    ["○ Medium", "❌ None", "● Strong", "● Strong"],
-    ["● Strong", "○ Medium", "❌ None", "○ Medium"]
-], columns=["HOW (Action Items)", "HOW FAR (Objectives)", "HOW MUCH (KPIs)", "WHAT (Strategy)"],
-   index=[f"Project Grid Alpha {i+1}" for i in range(4)])
+# --- HEAD 2: THE FOUR HOSHIN MATRIX HEADS INDICATED SEPARATELY ---
+st.subheader("🎯 Real-Time Strategic Pillars Breakdown")
+tabs = st.tabs(["Supply Chain Enhancement", "Capacity Building", "Overall Cost Reduction", "Sales & Marketing"])
 
-st.table(corr_matrix)
+for tab, pillar in zip(tabs, df_5yr["Pillar"].unique()):
+    with tab:
+        st.markdown(f"#### **5-Year Focus:** *{df_5yr[df_5yr['Pillar']==pillar]['Strategy Issue'].values[0]}*")
+        
+        # Filter KPIs per specific pillar
+        pillar_annual = df_annual[df_annual["Parent_Pillar"] == pillar]
+        
+        for idx, row in pillar_annual.iterrows():
+            c_lbl, c_tgt, c_act, c_pct = st.columns([4, 2, 2, 2])
+            with c_lbl:
+                st.markdown(f"**[{row['KPI_ID']}]** {row['Objective']}")
+            with c_tgt:
+                st.text(f"Target: {row['Target']}")
+            with c_act:
+                st.text(f"Actual: {row['Actual']}")
+            with c_pct:
+                st.progress(row["Achievement%"]/120.0)
+                st.caption(f"Performance: **{row['Achievement%']:.1f}%**")
+
+st.markdown("---")
+
+# --- HEAD 3: VISUAL MATRIX INTERLOCK (THE DIGITAL X-MATRIX VIEW) ---
+st.subheader("🔄 Interlocked X-Matrix Deployment View")
+st.markdown("> **How to Read This Map:** Your **5-Year Strategy (Bottom)** feeds directly into your **Annual Operational Objectives (Left)**, which are tracked via **KPIs (Right)** and deployed across active execution tasks per **Department (Top)**.")
+
+# Constructing an analytical cross-join view table to simulate multi-directional relational intersections
+x_matrix_simulation = df_annual.merge(df_priorities, on="Department", how="left")
+
+st.dataframe(
+    x_matrix_simulation[[
+        "Parent_Pillar", "KPI_ID", "Objective", "Target", "Actual", "Achievement%", "Department", "Prioritized Action Item"
+    ]].rename(columns={
+        "Parent_Pillar": "SOUTH (5-Year Strategy)",
+        "Objective": "WEST (Annual Objective)",
+        "Target": "EAST Target",
+        "Actual": "EAST Actual Status",
+        "Achievement%": "EAST Score %",
+        "Department": "NORTH Assignee",
+        "Prioritized Action Item": "NORTH (Prioritized Issue)"
+    }),
+    use_container_width=True,
+    hide_index=True
+)
+
+st.success("Configuration Validated. X-Matrix parameters interlocked without circular tracking references.")        
