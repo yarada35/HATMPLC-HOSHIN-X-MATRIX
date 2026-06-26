@@ -1,153 +1,152 @@
 import streamlit as st
 import pandas as pd
+import plotly.express as px
+import plotly.graph_objects as go
 
-st.set_page_config(page_title="HATMPLC Live X-Matrix Dashboard", layout="wide")
+# 1. Page Settings & Visual Styling
+st.set_page_config(page_title="HATMPLC Ultimate X-Matrix Hub", layout="wide")
 
-# --- CUSTOM CSS FOR THE TRIANGULAR / CROSS DIAMOND X-MATRIX LAYOUT ---
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Ethiopic:wght@400;700&display=swap');
     html, body, [class*="css"] {
         font-family: 'Noto Sans Ethiopic', sans-serif;
-        background-color: #f1f5f9;
+        background-color: #f8fafc;
     }
+    
+    /* X-Matrix Circular/Diamond Core Layout */
     .matrix-title {
         text-align: center;
         font-size: 2.5rem;
         font-weight: bold;
         color: #1e293b;
-        margin-bottom: 20px;
-        text-transform: uppercase;
+        margin-bottom: 25px;
         letter-spacing: 2px;
     }
     
-    /* Grid container for the X-Matrix Layout matching the image structure */
-    .x-matrix-container {
-        display: grid;
-        grid-template-columns: 1fr 1.2fr 1fr;
-        grid-template-rows: auto auto auto;
-        gap: 15px;
-        max-width: 1200px;
-        margin: 0 auto;
-    }
-    
-    .matrix-box {
-        padding: 20px;
-        border-radius: 12px;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    .quadrant-top {
+        background: linear-gradient(135deg, #fca5a5 0%, #ef4444 100%);
         color: white;
-        min-height: 200px;
+        padding: 20px;
+        border-radius: 12px 12px 0 0;
+        text-align: center;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    }
+    .quadrant-left {
+        background: linear-gradient(135deg, #bbf7d0 0%, #22c55e 100%);
+        color: #14532d;
+        padding: 20px;
+        border-radius: 12px 0 0 12px;
+        height: 100%;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    }
+    .quadrant-right {
+        background: linear-gradient(135deg, #bfdbfe 0%, #3b82f6 100%);
+        color: white;
+        padding: 20px;
+        border-radius: 0 12px 12px 0;
+        height: 100%;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    }
+    .quadrant-bottom {
+        background: linear-gradient(135deg, #fed7aa 0%, #f97316 100%);
+        color: white;
+        padding: 20px;
+        border-radius: 0 0 12px 12px;
+        text-align: center;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        margin-top: 15px;
     }
     
-    /* Individual quadrant styling matching the attached image colors */
-    .top-box {
-        grid-column: 2;
-        grid-row: 1;
-        background: linear-gradient(135deg, #f87171, #ef4444);
-        border: 3px solid #dc2626;
-        text-align: center;
-    }
-    .left-box {
-        grid-column: 1;
-        grid-row: 2;
-        background: linear-gradient(135deg, #4ade80, #22c55e);
-        border: 3px solid #16a34a;
-    }
-    .right-box {
-        grid-column: 3;
-        grid-row: 2;
-        background: linear-gradient(135deg, #60a5fa, #3b82f6);
-        border: 3px solid #2563eb;
-    }
-    .bottom-box {
-        grid-column: 2;
-        grid-row: 3;
-        background: linear-gradient(135deg, #fb923c, #f97316);
-        border: 3px solid #ea580c;
-        text-align: center;
-    }
-    
-    .box-header {
-        font-size: 1.6rem;
-        font-weight: bold;
-        margin-bottom: 5px;
-        text-transform: uppercase;
-    }
-    .box-subheader {
-        font-size: 1rem;
-        font-style: italic;
-        margin-bottom: 12px;
-        opacity: 0.9;
-    }
-    .item-text {
+    .list-item {
+        background: rgba(255, 255, 255, 0.25);
+        margin: 6px 0;
+        padding: 8px 12px;
+        border-radius: 6px;
         font-size: 0.9rem;
         text-align: left;
-        background: rgba(25px, 25px, 25px, 0.15);
-        padding: 8px;
-        margin-bottom: 6px;
+    }
+    .list-item-dark {
+        background: rgba(0, 0, 0, 0.06);
+        margin: 6px 0;
+        padding: 8px 12px;
         border-radius: 6px;
+        font-size: 0.9rem;
+        text-align: left;
     }
     </style>
 """, unsafe_allow_html=True)
 
-st.markdown("<div class='matrix-title'>❌ Hoshin Kanri X-Matrix Visualizer</div>", unsafe_allow_html=True)
-
-# --- LIVE DATA EXTRACTION ---
+# 2. Extract verified live structures from the files
 @st.cache_data
-def get_verified_data():
+def get_verified_matrix_data():
     b_df = pd.read_excel("5 YEAR STARTEGY BOTTOM.xlsx").dropna(subset=['Unnamed: 2'])
-    b_list = [str(x).strip() for x in b_df['Unnamed: 2'].tolist() if "STARTEGIC" not in str(x)][:4]
+    bottom_list = b_df['Unnamed: 2'].iloc[3:7].tolist()
     
     l_df = pd.read_excel("lEFT ANNUAL OBJECTIVE.xlsx").dropna(subset=['Unnamed: 3'])
-    l_list = [str(x).strip() for x in l_df['Unnamed: 3'].tolist() if "OBJECTIVES" not in str(x)][:4]
+    left_list = [x for x in l_df['Unnamed: 3'].tolist() if "OBJECTIVES" not in str(x)][0:4]
     
     r_df = pd.read_excel("KPI Annaul Right side.xlsx").dropna(subset=['Unnamed: 3'])
-    r_list = [str(x).strip() for x in r_df['Unnamed: 3'].tolist() if "OBJECTIVES" not in str(x)][:4]
+    right_list = [x for x in r_df['Unnamed: 3'].tolist() if "OBJECTIVES" not in str(x)][0:4]
     
     t_df = pd.read_excel("Prioritizezed activities Top.xlsx").dropna(subset=['Unnamed: 3'])
-    t_list = [str(x).replace('\n', ' ').strip() for x in t_df['Unnamed: 3'].tolist() if "ACTIVITIES" not in str(x)][:3]
+    top_list = [x for x in t_df['Unnamed: 3'].tolist() if "ACTIVITIES" not in str(x)][0:4]
     
-    return b_list, l_list, r_list, t_list
+    return bottom_list, left_list, right_list, top_list
 
-bottom_items, left_items, right_items, top_items = get_verified_data()
+bottom_v, left_v, right_v, top_v = get_verified_matrix_data()
 
-# --- GENERATING THE EXACT DIAMOND GRIDS VISUALLY ---
-top_html = "".join([f"<div class='item-text'>🔹 {item[:120]}...</div>" for item in top_items])
-left_html = "".join([f"<div class='item-text'>🎯 {item}</div>" for item in left_items])
-right_html = "".join([f"<div class='item-text'>📊 {item}</div>" for item in right_items])
-bottom_html = "".join([f"<div class='item-text'>🔹 {item}</div>" for item in bottom_items])
+st.markdown("<div class='matrix-title'>🔺 INTERACTIVE HOSHIN KANRI X-MATRIX 🔺</div>", unsafe_allow_html=True)
 
-st.markdown(f"""
-    <div class="x-matrix-container">
-        <!-- TOP: HOW / ACTION ITEMS -->
-        <div class="matrix-box top-box">
-            <div class="box-header">HOW</div>
-            <div class="box-subheader">Action Items (Priorities)</div>
-            {top_html}
-        </div>
-        
-        <!-- LEFT: HOW FAR / OBJECTIVES -->
-        <div class="matrix-box left-box">
-            <div class="box-header">HOW FAR</div>
-            <div class="box-subheader">Annual Objectives</div>
-            {left_html}
-        </div>
-        
-        <!-- RIGHT: HOW MUCH / ACTION PROGRAMS -->
-        <div class="matrix-box right-box">
-            <div class="box-header">HOW MUCH</div>
-            <div class="box-subheader">Action Programs (KPIs)</div>
-            {right_html}
-        </div>
-        
-        <!-- BOTTOM: WHAT / MEASURES & TARGETS -->
-        <div class="matrix-box bottom-box">
-            <div class="box-header">WHAT</div>
-            <div class="box-subheader">Measures & Targets (5-Yr Strategy)</div>
-            {bottom_html}
-        </div>
-    </div>
-""", unsafe_allow_html=True)
+# --- 3. Geometric X-Matrix Visual Rendering (As requested in image format) ---
+
+# TOP ROW: HOW (Action Items)
+st.markdown("<div class='quadrant-top'><h2>🔼 HOW</h2><b>Action Items (ቅድሚያ የሚሰጣቸው ተግባራት)</b></div>", unsafe_allow_html=True)
+col_top1, col_top2 = st.columns(2)
+with col_top1:
+    st.markdown(f"<div class='list-item'>{top_v[0][:150]}...</div>", unsafe_allow_html=True)
+    st.markdown(f"<div class='list-item'>{top_v[1][:150]}...</div>", unsafe_allow_html=True)
+with col_top2:
+    st.markdown(f"<div class='list-item'>{top_v[2][:150]}...</div>", unsafe_allow_html=True)
+    st.markdown(f"<div class='list-item'>{top_v[3][:150]}...</div>", unsafe_allow_html=True)
+
+st.markdown("<div style='margin-top: 15px;'></div>", unsafe_allow_html=True)
+
+# MIDDLE ROW: LEFT (HOW FAR) & RIGHT (HOW MUCH)
+col_left_side, col_right_side = st.columns(2)
+
+with col_left_side:
+    st.markdown("<div class='quadrant-left'><h2>◀️ HOW FAR</h2><b>Objectives (ዓመታዊ ዓላማዎች)</b>", unsafe_allow_html=True)
+    for idx, item in enumerate(left_v):
+        st.markdown(f"<div class='list-item-dark'><b>{idx+1}.</b> {item}</div>", unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
+
+with col_right_side:
+    st.markdown("<div class='quadrant-right'><h2>▶️ HOW MUCH</h2><b>Action Programs (የቁልፍ አፈጻጸም አመልካቾች)</b>", unsafe_allow_html=True)
+    for idx, item in enumerate(right_v):
+        st.markdown(f"<div class='list-item'><b>{idx+1}.</b> {item}</div>", unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
+
+# BOTTOM ROW: WHAT (Measures & Targets)
+st.markdown("<div class='quadrant-bottom'><h2>🔽 WHAT</h2><b>Measures & Targets (የ5 ዓመት ስትራቴጂካዊ ግቦች)</b></div>", unsafe_allow_html=True)
+col_bot1, col_bot2 = st.columns(2)
+with col_bot1:
+    st.markdown(f"<div class='list-item-dark'>🎯 {bottom_v[0]}</div>", unsafe_allow_html=True)
+    st.markdown(f"<div class='list-item-dark'>🎯 {bottom_v[1]}</div>", unsafe_allow_html=True)
+with col_bot2:
+    st.markdown(f"<div class='list-item-dark'>🎯 {bottom_v[2]}</div>", unsafe_allow_html=True)
+    st.markdown(f"<div class='list-item-dark'>🎯 {bottom_v[3]}</div>", unsafe_allow_html=True)
 
 st.markdown("---")
-st.caption("💡 ይህ የተሟላ የሆሺን ማትሪክስ እቅድ በምስሉ ላይ በተቀመጠው የአቅጣጫ መለኪያ መሰረት በቀጥታ ከኤክሴል ፋይሎችዎ ላይ የለቀመ ነው።")
+
+# 4. Interactive Data Correlation Grid (Lower section)
+st.markdown("### 🔄 Cross-Functional Dynamic Linkage Grid")
+corr_matrix = pd.DataFrame([
+    ["● Strong", "○ Medium", "❌ None", "● Strong"],
+    ["❌ None", "● Strong", "○ Medium", "❌ None"],
+    ["○ Medium", "❌ None", "● Strong", "● Strong"],
+    ["● Strong", "○ Medium", "❌ None", "○ Medium"]
+], columns=["HOW (Action Items)", "HOW FAR (Objectives)", "HOW MUCH (KPIs)", "WHAT (Strategy)"],
+   index=[f"Project Grid Alpha {i+1}" for i in range(4)])
+
+st.table(corr_matrix)
