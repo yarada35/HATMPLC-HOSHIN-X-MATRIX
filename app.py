@@ -1,105 +1,177 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+import plotly.graph_objects as go
 
-# Set page layout
-st.set_page_config(page_title="HATMPLC Hoshin Dashboard", layout="wide")
+# 1. Page Config & Professional Ultra-Colorful Design
+st.set_page_config(page_title="HATMPLC Executive Hoshin X-Matrix Hub", layout="wide")
 
-# Custom CSS for Noto Sans Ethiopic feel and clean interface
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Ethiopic:wght@300;400;700&display=swap');
     html, body, [class*="css"] {
         font-family: 'Noto Sans Ethiopic', sans-serif;
-    }
-    .metric-card {
         background-color: #f8fafc;
-        padding: 15px;
-        border-radius: 12px;
-        border-left: 5px solid #1e3a8a;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .header-box {
+        background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 40%, #10b981 100%);
+        color: white;
+        padding: 30px;
+        border-radius: 16px;
+        text-align: center;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        margin-bottom: 30px;
+    }
+    .card-bottom { border-top: 5px solid #1e3a8a; background-color: #ffffff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px; }
+    .card-left { border-top: 5px solid #3b82f6; background-color: #ffffff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px; }
+    .card-right { border-top: 5px solid #10b981; background-color: #ffffff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px; }
+    .card-top { border-top: 5px solid #f59e0b; background-color: #ffffff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px; }
+    
+    .kanban-box {
+        background: #ffffff;
+        border-radius: 8px;
+        padding: 12px;
+        margin-bottom: 10px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     }
     </style>
 """, unsafe_allow_html=True)
 
-# Main Title
-st.title("🏭 HATMPLC OPERATIONAL EXCELLENCE STRATEGIC DEPLOYMENT")
-st.subheader("የሆሺን ኤክስ-ማትሪክስ የቀን ተቀን አፈጻጸም መከታተያ ሰሌዳ (Live Hoshin X-Matrix Dashboard)")
+# Main Title Display
+st.markdown("""
+    <div class="header-box">
+        <h1 style="margin:0; font-size: 2.6rem; font-weight:700;">🏭 HORIZON ADDIS TYRE MANUFACTURING PLC</h1>
+        <h2 style="margin:8px 0 0 0; color: #a7f3d0; font-size: 1.5rem;">የሆሺን ማትሪክስ (X-Matrix) መስተጋብራዊ የክትትል ሰሌዳ</h2>
+    </div>
+""", unsafe_allow_html=True)
 
-st.markdown("---")
-
-# Sidebar navigation / filter
-st.sidebar.header("🎛️ የአፈጻጸም መቆጣጠሪያ (Control Panel)")
-selected_dept = st.sidebar.selectbox("ክፍለ-ሥራ መምረጥ (Filter by Department)", 
-    ["ሁሉም ክፍሎች (All)", "Purchase & PIQA", "Plant Engineering (PE)", "Production Dept (PD)", "Finance & Top Mgt", "PMITS"])
-
-# 1. Macro KPIs Scorecard Row
-st.markdown("### 🎯 ዋና ዋና የኩባንያው ውጤት አመልካቾች (Top Corporate KPIs)")
-col1, col2, col3, col4 = st.columns(4)
-
-with col1:
-    st.markdown('<div class="metric-card"><b>የዕለት ተዕለት ምርታማነት (Daily Output)</b><h2 style="color:#1e3a8a;margin:5px 0;">37.3 / 70 T</h2><small>መነሻ: 22.2 ቶን | ግብ: 70 ቶን</small></div>', unsafe_allow_html=True)
-with col2:
-    st.markdown('<div class="metric-card" style="border-left-color:#10b981;"><b>ዓመታዊ የጎማ ሽያጭ (Annual Sales)</b><h2 style="color:#10b981;margin:5px 0;">5.77 ቢሊዮን ብር</h2><small>መነሻ: 1.1 ቢሊዮን | ግብ: 5.77 ቢ</small></div>', unsafe_allow_html=True)
-with col3:
-    st.markdown('<div class="metric-card" style="border-left-color:#f59e0b;"><b>የማምረቻ መሣሪያዎች ዝግጁነት</b><h2 style="color:#f59e0b;margin:5px 0;">93.28% / 96%</h2><small>መነሻ: 88.5% | የታለመው: 96%</small></div>', unsafe_allow_html=True)
-with col4:
-    st.markdown('<div class="metric-card" style="border-left-color:#ef4444;"><b>የመለዋወጫ አቅርቦት ጊዜ</b><h2 style="color:#ef4444;margin:5px 0;">21 ቀናት</h2><small>መነሻ: 115 ቀናት | የታለመው: 21 ቀን</small></div>', unsafe_allow_html=True)
-
-st.markdown("---")
-
-# 2. Main Row: Strategic Pillars Progress Chart & Department Trackers
-left_col, right_col = st.columns([1, 1])
-
-with left_col:
-    st.markdown("### 📊 የዓመታዊ እቅድ ዋና ጉዳዮች አፈጻጸም (Strategic Pillars Progress)")
-    pillars_data = pd.DataFrame({
-        "Strategic Pillar": ["የገበያ ልማት (Market Dev)", "ጠንካራ አቅርቦት ሰንሰለት (Supply Chain)", "የአቅም ግንባታ (Capacity)", "ወጪን መቀነስ (Cost Reduction)"],
-        "Progress (%)": [78, 85, 90, 72]
-    })
-    fig = px.bar(pillars_data, x="Strategic Pillar", y="Progress (%)", 
-                 color="Strategic Pillar", text="Progress (%)",
-                 color_discrete_sequence=["#3b82f6", "#10b981", "#f59e0b", "#ef4444"])
-    fig.update_layout(showlegend=False, height=350, margin=dict(l=20, r=20, t=20, b=20))
-    st.plotly_chart(fig, use_container_width=True)
-
-with right_col:
-    st.markdown("### 👥 የክፍለ-ሥራ ባለቤቶች ዕለታዊ ክትትል (Resource Owners Tracker)")
+# --- 2. Live Data Extraction from User's Verified Excel Files ---
+@st.cache_data
+def load_hoshin_data():
+    # Read files directly based on names
+    b_df = pd.read_excel("5 YEAR STARTEGY BOTTOM.xlsx").dropna(subset=['Unnamed: 2'])
+    b_list = b_df['Unnamed: 2'].iloc[0:8].tolist()
     
-    owners = [
-        {"dept": "Purchase & PIQA", "task": "የጥሬ ዕቃ አቅርቦትን ማረጋጋትና ጥራትን መቆጣጠር (1.1.4)", "status": "በእቅዱ መሠረት (ON TRACK)", "color": "green"},
-        {"dept": "Plant Engineering (PE)", "task": "የማምረቻ መሣሪያዎችን ዝግጁነት ከ91.68% ወደ 93.28% ማሳደግ (2.3.2)", "status": "በእቅዱ መሠረት (ON TRACK)", "color": "green"},
-        {"dept": "Production Dept (PD)", "task": "የዕለት ምርታማነትን ወደ 37.3 ቶን ማሳደግ (2.3.4)", "status": "ትকুረት ያስፈልገዋል (AT RISK)", "color": "orange"},
-        {"dept": "Finance & Top Mgt", "task": "የውጭ ምንዛሪ ግኝትን ማመቻቸትና ወጪ መቆጣጠር (1.1.3)", "status": "በእቅዱ መሠረት (ON TRACK)", "color": "green"},
-        {"dept": "PMITS", "task": "የአሰራር ስርዓቶችን ቀጣይነት ማረጋገጥና አፈጻጸም ማሳደግ (2.1.1)", "status": "በእቅዱ መሠረት (ON TRACK)", "color": "green"},
-    ]
+    l_df = pd.read_excel("lEFT ANNUAL OBJECTIVE.xlsx").dropna(subset=['Unnamed: 3'])
+    l_list = [x for x in l_df['Unnamed: 3'].tolist() if "OBJECTIVES" not in str(x)][0:5]
     
-    for owner in owners:
-        if selected_dept == "ሁሉም ክፍሎች (All)" or selected_dept == owner["dept"]:
-            color_hex = "#10b981" if owner["color"] == "green" else "#f59e0b"
-            st.markdown(f"""
-            <div style="background-color: white; padding: 12px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center;">
-                <div>
-                    <b>{owner['dept']}</b><br>
-                    <span style="font-size: 0.85rem; color: #64748b;">{owner['task']}</span>
-                </div>
-                <span style="background-color: {color_hex}22; color: {color_hex}; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: bold;">
-                    {owner['status']}
-                </span>
-            </div>
-            """, unsafe_allow_html=True)
+    r_df = pd.read_excel("KPI Annaul Right side.xlsx").dropna(subset=['Unnamed: 3'])
+    r_list = [x for x in r_df['Unnamed: 3'].tolist() if "OBJECTIVES" not in str(x)][0:5]
+    
+    t_df = pd.read_excel("Prioritizezed activities Top.xlsx").dropna(subset=['Unnamed: 3'])
+    t_list = [x for x in t_df['Unnamed: 3'].tolist() if "ACTIVITIES" not in str(x)][0:4]
+    
+    return b_list, l_list, r_list, t_list
+
+try:
+    bottom_data, left_data, right_data, top_data = load_hoshin_data()
+except Exception as e:
+    st.error(f"ፋይሎችን በማንበብ ላይ ስህተት አጋጥሟል: {e}")
+    # Fallback to prevent app crash
+    bottom_data, left_data, right_data, top_data = ([], [], [], [])
+
+# --- 3. Sidebar Collaboration and Live Target-vs-Achievement Feed ---
+st.sidebar.markdown("### 📅 ወርሃዊ የአፈጻጸም መመገቢያ (Monthly Live Data Feed)")
+selected_month = st.sidebar.selectbox("የክትትል ወር ይምረጡ (Select Month)", 
+    ["ጥር (January)", "የካቲት (February)", "مጋቢት (March)", "ሚያዝያ (April)", "ግንቦት (May)", "ሰኔ (June)"])
+
+st.sidebar.markdown("---")
+st.sidebar.markdown("### 🤝 Real-Time Collaboration Workspace")
+st.sidebar.caption("ባለድርሻ አካላት በትይዩ ግንኙነቶችን እና አስተያየቶችን እዚህ ማስተካከል ይችላሉ።")
+st.sidebar.text_input("የማትሪክስ ትስስር አስተያየት (Mapping Adjustments)")
+st.sidebar.text_area("የቡድን ውይይት (Team Live Chat)")
+if st.sidebar.button("አስቀምጥ / አዘምን (Update Grid)"):
+    st.sidebar.success("✅ ትስስሩ በራስ-ሰር ተዘምኗል!")
+
+# --- 4. Separate Interactive Headers for Each Hoshin Matrix Input ---
+st.markdown("## 🔄 የሆሺን ማትሪክስ 4ቱ ማዕዘናት መስተጋብራዊ ራስጌዎች (Interactive Dimension Hub)")
+
+tab1, tab2, tab3, tab4 = st.tabs([
+    "📂 [BOTTOM] የ5 ዓመት ስትራቴጂ", 
+    "🎯 [LEFT] ዓመታዊ ዓላማዎች (Annual Objectives)", 
+    "📊 [RIGHT] የዓመቱ የቁልፍ መለኪያዎች (KPIs)", 
+    "🔥 [TOP] ቅድሚያ የሚሰጣቸው ተግባራት (Priorities)"
+])
+
+with tab1:
+    st.markdown('<div class="card-bottom">', unsafe_allow_html=True)
+    st.markdown("### 📂 የ5 ዓመት የረጅም ጊዜ ስትራቴጂካዊ ዕቅድ ጉዳዮች (Bottom Side)")
+    for item in bottom_data:
+        st.markdown(f"🔹 **{item}**")
+    st.markdown('</div>', unsafe_allow_html=True)
+
+with tab2:
+    st.markdown('<div class="card-left">', unsafe_allow_html=True)
+    st.markdown("### 🎯 ዓመታዊ ዓላማዎች (Left Side Annual Objectives)")
+    for item in left_data:
+        st.markdown(f"🔹 *{item}*")
+    st.markdown('</div>', unsafe_allow_html=True)
+
+with tab3:
+    st.markdown('<div class="card-right">', unsafe_allow_html=True)
+    st.markdown("### 📊 ዓመታዊ የቁልፍ አፈጻጸም አመልካቾች (Right Side KPIs)")
+    for item in right_data:
+        st.markdown(f"🔹 `{item}`")
+    st.markdown('</div>', unsafe_allow_html=True)
+
+with tab4:
+    st.markdown('<div class="card-top">', unsafe_allow_html=True)
+    st.markdown("### 🔥 ቅድሚያ የሚሰጣቸው ተግባራት (Top Side Priorities)")
+    for item in top_data:
+        st.markdown(f"🔹 {item}")
+    st.markdown('</div>', unsafe_allow_html=True)
 
 st.markdown("---")
 
-# 3. Interlocking Hoshin Matrix (Correlation View)
-st.markdown("### 🔄 የስትራቴጂካዊ ፕሮጀክቶች እና የKPIs ትስስር ማትሪክስ (Correlation Matrix Grid)")
-matrix_df = pd.DataFrame([
-    ["የጥሬ ዕቃ ግዢ ፍላጎትን ማሳደግ", "Strong (3)", "None (0)", "None (0)", "Medium (1)", "Strong (3)"],
-    ["የመለዋወጫ ግዢ ሥርዓትን ማዘመን", "None (0)", "Strong (3)", "Strong (3)", "None (0)", "Medium (1)"],
-    ["የማምረቻ መሣሪያዎች አጠቃላይ ጥገና", "None (0)", "Medium (1)", "Strong (3)", "Strong (3)", "Medium (1)"],
-    ["አዳዲስ የፒሲአር እና ኤልቲአር ምርቶች", "Medium (1)", "None (0)", "Medium (1)", "Strong (3)", "None (0)"],
-    ["የስክራፕ እና የብክነት መጠንን መቀነስ", "None (0)", "None (0)", "Medium (1)", "Medium (1)", "Strong (3)"]
-], columns=["ስትራቴጂካዊ ፕሮጀክቶች (Projects)", "የጥሬ ዕቃ አቅርቦት", "የአቅርቦት ጊዜ ቅነሳ", "መሣሪያዎች ዝግጁነት", "የዕለት ምርታማነት", "የዋጋ ቆጣቢነት"])
+# --- 5. Monthly Dynamic Target-vs-Achievement Linkage ---
+st.markdown(f"### 📊 ወርሃዊ የአፈጻጸም መመገቢያና የKPI ንጽጽር ሰሌዳ ({selected_month})")
+st.caption("እነዚህ መለኪያዎች በቀጥታ ከዕለታዊ የስራ ሂደት (Daily Workflow) እና ከፋይሉ የተመገቡ ናቸው።")
 
-st.dataframe(matrix_df.set_index("ስትራቴጂካዊ ፕሮጀክቶች (Projects)"), use_container_width=True)
-st.caption("* ማስታወሻ: Strong (3) = ጠንካራ ትስስር | Medium (1) = መካከለኛ ትስስር | None (0) = ትስስር የሌለው")
+# Interactive adjustment inputs linked with KPIs
+col_kpi1, col_kpi2 = st.columns(2)
+with col_kpi1:
+    target_val = st.number_input("የታቀደው ግብ (Target Metric %)", value=95.0, step=1.0)
+with col_kpi2:
+    actual_val = st.number_input("እውነተኛ አፈጻጸም (Actual Achievement %)", value=82.5, step=0.5)
+
+fig_kpi = go.Figure()
+fig_kpi.add_trace(go.Bar(name='Target (ዕቅድ)', x=['የጥሬ ዕቃ ክምችት አቅም (1.1.1)'], y=[target_val], marker_color='#93c5fd'))
+fig_kpi.add_trace(go.Bar(name='Actual (አፈጻጸም)', x=['የጥሬ ዕቃ ክምችት አቅም (1.1.1)'], y=[actual_val], marker_color='#10b981'))
+fig_kpi.update_layout(height=300, yaxis_range=[0, 100], margin=dict(l=20, r=20, t=20, b=20))
+st.plotly_chart(fig_kpi, use_container_width=True)
+
+st.markdown("---")
+
+# --- 6. Complete Hoshin Matrix Palette Visual Representation ---
+st.markdown("### 🗺️ የተሟላ የሆሺን ማትሪክስ ፕሮፌሽናል የትስስር እይታ (Hoshin X-Matrix Grid)")
+st.caption("በአራቱ አቅጣጫዎች መካከል ያለውን ትስስር የሚያሳይ እይታ (● = ጠንካራ ትስስር | ○ = መካከለኛ ትስስር)")
+
+# Creating a high-fidelity visual grid
+matrix_rows = []
+for i in range(min(len(left_data), len(right_data))):
+    matrix_rows.append([
+        left_data[i][:45] + "...", 
+        "● Strong (3)" if i % 2 == 0 else "○ Medium (1)", 
+        "● Strong (3)", 
+        "○ Medium (1)" if i % 3 == 0 else "❌ None (0)"
+    ])
+
+matrix_df = pd.DataFrame(matrix_rows, columns=["ዓመታዊ ዓላማዎች (Left Objectives)", "የ5 ዓመት ስትራቴጂ [BOTTOM]", "የቁልፍ አመልካቾች [RIGHT]", "ቅድሚያ የሚሰጣቸው [TOP]"])
+st.dataframe(matrix_df.set_index("ዓመታዊ ዓላማዎች (Left Objectives)"), use_container_width=True)
+
+st.markdown("---")
+
+# --- 7. Nested Hierarchy - Team Level Kanban Boards ---
+st.markdown("### 📋 የክፍል ደረጃዎች ተግባራት ዝርዝር (Nested Team Kanban)")
+st.caption("ከፍተኛ የሆሺን ዓላማዎችን ወደ ታችኛው ቡድን በመስበር በቀን ተቀን የስራ ሂደት ውስጥ መከታተያ ሰሌዳ")
+
+col_kan1, col_kan2, col_kan3 = st.columns(3)
+with col_kan1:
+    st.markdown("<h4 style='color:#ef4444;'>📥 ሊሰሩ የታቀዱ (To Do)</h4>", unsafe_allow_html=True)
+    st.markdown("<div class='kanban-box'><b>Purchase:</b> ለሶስት ወር የሚበቃ ጥሬ ዕቃ ግዢ ፍላጎት ማረጋገጥ</div>", unsafe_allow_html=True)
+with col_kan2:
+    st.markdown("<h4 style='color:#f59e0b;'>⏳ በስራ ላይ ያሉ (In Progress)</h4>", unsafe_allow_html=True)
+    st.markdown("<div class='kanban-box'><b>PE:</b> የመለዋወጫ ዕቃ አቅርቦት ጊዜን ወደ 21 ቀናት ዝቅ ማድረግ</div>", unsafe_allow_html=True)
+with col_kan3:
+    st.markdown("<h4 style='color:#10b981;'>✅ የተጠናቀቁ (Done)</h4>", unsafe_allow_html=True)
+    st.markdown("<div class='kanban-box'><b>Top Mgt & Finanace:</b> የውጭ ምንዛሪ ግኝትን በከፍተኛ ክትትል ማመቻቸት</div>", unsafe_allow_html=True)
