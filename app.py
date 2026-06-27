@@ -3,7 +3,7 @@ import pandas as pd
 
 # --- STAGE CONFIGURATION & SOLID BLACK BACKDROP ---
 st.set_page_config(
-    page_title="Horizon Addis Tyre - Complete Hoshin Master Suite",
+    page_title="Horizon Addis Tyre - Complete Hoshin Matrix Suite",
     page_icon="🎯",
     layout="wide"
 )
@@ -71,13 +71,15 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# --- COMPLETE RAW PRODUCTION DATASET POPULATION ---
+# =========================================================
+#   LOAD COMPLETE UNABRIDGED ARRAYS FROM ALL 4 PANELS
+# =========================================================
 @st.cache_data
 def load_absolute_unlinked_inventories():
-    # 1. Complete Bottom 5-Year Master Data Strategy List
+    # 1. SOUTH PANEL: Complete Bottom 5-Year Strategy List
     bottom_5yr_raw = [
         {"ID": "1.1", "Pillar": "Supply Chain Enhancement", "Strategic Issue / Objective": "የግብዓት አቅርቦትን አስተማማኝ ማድረግ (Reliable Raw Material Supply Pipeline)"},
-        {"ID": "1.2", "Pillar": "Supply Chain Enhancement", "Strategic Issue / Objective": "የሀገር ውስጥ ግብዓቶች አጠቃቀም ማሳደግ (Maximize Local Inbound Sourcing Subcomponents)"},
+        {"ID": "1.2", "Pillar": "Supply Chain Enhancement", "Strategic Issue / Objective": "የሀገር ውስጥ ግብዓቶች አጠቃቀም ማሳደግ (Maximize Local Sourcing Subcomponents)"},
         {"ID": "2.1", "Pillar": "Capacity Building", "Strategic Issue / Objective": "የሰው ሀብት አቅም ማሳደግና ማምረቻ መሳሪያዎች አጠቃቀም (Human Resource Capacity & Plant Equipment Utilization)"},
         {"ID": "2.2", "Pillar": "Capacity Building", "Strategic Issue / Objective": "የዲጂታል ቴክኖሎጂ ትግበራና አውቶሜሽን ማስፋፋት (Digital Technology Infrastructure & Automation Expansion)"},
         {"ID": "3.1", "Pillar": "Overall Cost Reduction", "Strategic Issue / Objective": "የምርት ወጪን በከፍተኛ ሁኔታ መቀነስ (Rigorous Production Cost Reduction Framework)"},
@@ -86,7 +88,7 @@ def load_absolute_unlinked_inventories():
         {"ID": "4.2", "Pillar": "Sales & Marketing", "Strategic Issue / Objective": "የብራንድ ተወዳዳሪነትንና የደንበኞች እርካታን ማረጋገጥ (Brand Competitiveness & Customer Satisfaction Systems)"}
     ]
     
-    # 2. Complete Left Annual Objective Data List
+    # 2. WEST PANEL: Complete Left Annual Strategy Objectives List
     left_annual_raw = [
         {"ID": "1.1.1", "Objective": "ለሶስት ወር ምርት የሚበቃ ጥሬ ዕቃ በክምችትና በግዢ ሂደት እንዲኖር ማድረግን ከ27.7% ወደ 95% ማሳደግ"},
         {"ID": "1.1.2", "Objective": "የመለዋወጫ አቅርቦት ጊዜ ከ115 ቀን ወደ 21 ቀናት ዝቅ ማድረግ"},
@@ -98,49 +100,62 @@ def load_absolute_unlinked_inventories():
         {"ID": "2.1.3", "Objective": "የሠራተኛው የሥራ ተነሳሽነትና የባለቤትነት ስሜት (employee engagement) ከ60% ወደ 85% ማሳደግ"},
         {"ID": "3.1.1", "Objective": "የፈርነስ ፍጆታን (ቶን/ቶን) ከ 0.56 ወደ 0.25 መቀነስ"},
         {"ID": "3.1.2", "Objective": "ኤሌክትሪክ ፍጆታን በ (KWH/ton) ከ 1529 ወደ 1200 መቀነስ"},
+        {"ID": "3.1.3", "Objective": "የእንፋሎት (Steam) ፍጆታ ማመቻቸትና ብክነትን መቀነስ"},
+        {"ID": "3.1.4", "Objective": "የጥሬ ዕቃ ብክነት (Scrap Rate) ከ 2.1% ወደ 1.2% ዝቅ ማድረግ"},
         {"ID": "4.1.1", "Objective": "የክሌም ወጪን ከ 0.006% ወደ 0.003% መቀነስ"},
-        {"ID": "4.1.2", "Objective": "የሀገር ውስጥ የገበያ ድርሻን ከ 45% ወደ 60% ማሳደግ"}
+        {"ID": "4.1.2", "Objective": "የሀገር ውስጥ የገበያ ድርሻን ከ 45% ወደ 60% ማሳደግ"},
+        {"ID": "4.1.3", "Objective": "የውጭ ሀገር ወጪ ንግድ (Export Sales) በ 25% ማሳደግ"}
     ]
     
-    # 3. Complete Right Live KPI Data List Registry
+    # 3. EAST PANEL: Complete Right Annual KPI List with Target, Direction and Assigned Department Responsibilities
     right_kpis_raw = [
         {"KPI_ID": "1.1.1", "Pillar": "Supply Chain Enhancement", "Title": "Raw Material Stock Inventory Pipeline Coverage", "Target": 0.95, "Direction": "Up", "Dept": "Purchase"},
-        {"KPI_ID": "1.1.2", "Pillar": "Supply Chain Enhancement", "Title": "Spare Parts Inbound Lead Time Index", "Target": 21.0, "Direction": "Down", "Dept": "Plant Engineering"},
-        {"KPI_ID": "1.1.5", "Pillar": "Supply Chain Enhancement", "Title": "Furnace Oil Supply Availability Rate", "Target": 1.00, "Direction": "Up", "Dept": "Purchase"},
+        {"KPI_ID": "1.1.2", "Pillar": "Supply Chain Enhancement", "Title": "Spare Parts Inbound Lead Time Index (Days)", "Target": 21.0, "Direction": "Down", "Dept": "Plant Engineering"},
+        {"KPI_ID": "1.1.3", "Pillar": "Supply Chain Enhancement", "Title": "Project Modification Equipment Delivery Completeness Rate", "Target": 1.00, "Direction": "Up", "Dept": "Project Management"},
+        {"KPI_ID": "1.1.4", "Pillar": "Supply Chain Enhancement", "Title": "Direct Manufacturer Sourcing Supplier Ratio", "Target": 0.80, "Direction": "Up", "Dept": "Purchase"},
+        {"KPI_ID": "1.1.5", "Pillar": "Supply Chain Enhancement", "Title": "Furnace Oil Continuous Supply Availability Rate", "Target": 1.00, "Direction": "Up", "Dept": "Purchase"},
         {"KPI_ID": "2.1.1", "Pillar": "Capacity Building", "Title": "Workforce Operational Performance Efficiency", "Target": 0.95, "Direction": "Up", "Dept": "HR"},
         {"KPI_ID": "2.1.2", "Pillar": "Capacity Building", "Title": "Employee Overall Factory Satisfaction Survey Score", "Target": 0.95, "Direction": "Up", "Dept": "HR"},
+        {"KPI_ID": "2.1.3", "Pillar": "Capacity Building", "Title": "Employee Workplace Engagement Index Rating", "Target": 0.85, "Direction": "Up", "Dept": "HR"},
         {"KPI_ID": "3.1.1", "Pillar": "Overall Cost Reduction", "Title": "Furnace Fuel Consumption Ratio (Tons/Ton)", "Target": 0.25, "Direction": "Down", "Dept": "Production"},
         {"KPI_ID": "3.1.2", "Pillar": "Overall Cost Reduction", "Title": "Electrical Energy Utility Index (KWH/Ton)", "Target": 1200.0, "Direction": "Down", "Dept": "Plant Engineering"},
+        {"KPI_ID": "3.1.3", "Pillar": "Overall Cost Reduction", "Title": "Steam Generation Efficiency / Loss Mitigation Index", "Target": 0.90, "Direction": "Up", "Dept": "Plant Engineering"},
+        {"KPI_ID": "3.1.4", "Pillar": "Overall Cost Reduction", "Title": "Compound and Components Extrusion Scrap Rate Percentage", "Target": 1.20, "Direction": "Down", "Dept": "Production"},
         {"KPI_ID": "4.1.1", "Pillar": "Sales & Marketing", "Title": "Commercial Product Warranty Claim Defect Cost Ratio", "Target": 0.003, "Direction": "Down", "Dept": "PIQA"},
-        {"KPI_ID": "4.1.2", "Pillar": "Sales & Marketing", "Title": "Domestic Market Penetration Index Share", "Target": 0.60, "Direction": "Up", "Dept": "Sales"}
+        {"KPI_ID": "4.1.2", "Pillar": "Sales & Marketing", "Title": "Domestic Market Penetration Index Share", "Target": 0.60, "Direction": "Up", "Dept": "Sales"},
+        {"KPI_ID": "4.1.3", "Pillar": "Sales & Marketing", "Title": "Export Volume Growth Operational Achievement Metric", "Target": 0.25, "Direction": "Up", "Dept": "Sales"}
     ]
     
-    # 4. Complete Top Priorities Deployment Data List
+    # 4. NORTH PANEL: Complete Top Priority Activities List
     top_priorities_raw = [
         {"Dept": "Purchase & PIQA", "Priority": "አምራች አቅራቢዎችን ለይቶ ማወቅ፣ የተሻሉትን መምረጥና በአካል ሄዶ ማነጋገር (Sourcing Validation)"},
-        {"Dept": "Top Mgt & Finance", "Priority": "ከፍተኛ ክትትል በማድረግና አዋጭነትን በማመዛዘን የውጭ ምንዛሪ ግኝትን ማመቻጸት (FX Liquidity Management)"},
+        {"Dept": "Top Mgt & Finance", "Priority": "ከፍተኛ ክትትል በማድረግና አዋጭነትን በማመዛዘን የውጭ ምንዛሪ ግኝትን ማመቻቸት (FX Liquidity Management)"},
         {"Dept": "Plant Engineering", "Priority": "ለማምረቻ መሣሪዎች፣ መገልገያዎችና መለዋወጫዎች ትክለኛውን ስፔሲፊኬሽን በወቅቱ ማቅረብ (Technical Standardization)"},
         {"Dept": "Production", "Priority": "የሃይል አጠቃቀምን በየዕለቱ መከታተልና አላስፈላጊ ብክነትን ሙሉ በሙሉ ማስወገድ (Lean Utility Tracking)"},
         {"Dept": "Commercial Operations", "Priority": "የገበያ ስለላ (market intelligence) ስራን ማጠናከርና የሽያጭ ኔትወርክን ማስፋፋት (Commercial Network Expansion)"},
-        {"Dept": "HR & Admin", "Priority": "የክህሎት ክፍተቶችን መለየትና ያተኮሩ ተግባራዊ ስልጠናዎችን መስጠት (Targeted Capacity Development)"}
+        {"Dept": "HR & Admin", "Priority": "የክህሎት ክፍተቶችን መለየትና ያተኮሩ ተግባራዊ ስልጠናዎችን መስጠት (Targeted Capacity Development)"},
+        {"Dept": "Quality Assurance", "Priority": "በሂደት ላይ ያሉ ምርቶች ጥራት ቁጥጥር ስርአትን ማጠናከርና የቆሻሻ መጠንን መቀነስ (In-line Quality Governance)"},
+        {"Dept": "IT & Automation", "Priority": "በፋብሪካው ውስጥ የመረጃ ፍሰትን ለማሳለጥ የዲጂታል መከታተያ መረቦችን መዘርጋት (Digital Thread Deployment)"}
     ]
     
     return pd.DataFrame(bottom_5yr_raw), pd.DataFrame(left_annual_raw), pd.DataFrame(right_kpis_raw), pd.DataFrame(top_priorities_raw)
 
-df_5yr, df_annual, df_kpis, df_priorities = load_absolute_unlinked_inventories()
+df_5yr, df_annual, df_kpis, df_priorities = load_complete_unlinked_inventories()
 
-# --- INITIALIZE MULTI-MONTH STATE TRACKING ARRAY ---
+# --- INITIALIZE MULTI-MONTH STATE TRACKING FOR EVERY SINGLE INTERACTIVE KPI ---
 if "monthly_feed" not in st.session_state:
     st.session_state.monthly_feed = {
-        "1.1.1": 0.55, "1.1.2": 72.0, "1.1.5": 0.85, "2.1.1": 0.84, "2.1.2": 0.78, 
-        "3.1.1": 0.42, "3.1.2": 1410.0, "4.1.1": 0.005, "4.1.2": 0.48
+        "1.1.1": 0.55, "1.1.2": 72.0, "1.1.3": 0.80, "1.1.4": 0.70, "1.1.5": 0.90,
+        "2.1.1": 0.84, "2.1.2": 0.78, "2.1.3": 0.70,
+        "3.1.1": 0.42, "3.1.2": 1410.0, "3.1.3": 0.75, "3.1.4": 1.90,
+        "4.1.1": 0.005, "4.1.2": 0.48, "4.1.3": 0.15
     }
 
 # =========================================================
 #   APPLICATION INTERFACE HEADS
 # =========================================================
 st.markdown("<h1 style='text-align:center;'>🎯 HORIZON ADDIS TYRE MASTER HOSHIN REPOSITORY</h1>", unsafe_allow_html=True)
-st.markdown("<p style='text-align:center; color:#666666;'>Corporate Strategic Alignment System & Dynamic Activity Ledger</p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align:center; color:#666666;'>Corporate Strategic Alignment System — Complete Unabridged Master Data View</p>", unsafe_allow_html=True)
 st.markdown("---")
 
 # --- 1. OVERARCHING VISUAL REPRESENTATION (ALL-IN-ONE VISUAL MATRIX) ---
@@ -155,26 +170,24 @@ st.markdown("""
 """, unsafe_allow_html=True)
 st.markdown('</div>', unsafe_allow_html=True)
 
-# --- 2. ISOLATED DROP-DOWN MASTER LISTS REGISTER ---
-st.markdown("<h3 style='color:#FFFFFF; border-left: 4px solid #FFFFFF; padding-left:10px;'>📁 FULL STRATEGIC MASTER MATRIX DROPDOWNS</h3>", unsafe_allow_html=True)
+# --- 2. ISOLATED DROP-DOWN MASTER LISTS REGISTER (UNABRIDGED DATAFRAMES) ---
+st.markdown("<h3 style='color:#FFFFFF; border-left: 4px solid #FFFFFF; padding-left:10px;'>📁 COMPLETE STRATEGIC MASTER MATRIX DROPDOWNS</h3>", unsafe_allow_html=True)
 
 # Dropdown A: Bottom 5-Year Plan (Full List)
-with st.expander("⬇️ [BOTTOM PANEL DROPDOWN] — 5 YEAR STRATEGIC LAUNCH LIST (FULL)"):
+with st.expander("⬇️ [BOTTOM PANEL DROPDOWN] — 5 YEAR STRATEGIC LAUNCH LIST (COMPLETE)"):
     st.dataframe(df_5yr, use_container_width=True, hide_index=True)
 
 # Dropdown B: Left Annual Objectives (Full List)
-with st.expander("⬅️ [LEFT PANEL DROPDOWN] — ANNUAL STRATEGIC OBJECTIVE CATALOG (FULL)"):
-    for idx, row in df_annual.iterrows():
-        st.markdown(f"📌 **Item ID {row['ID']}**: {row['Objective']}")
+with st.expander("⬅️ [LEFT PANEL DROPDOWN] — ANNUAL STRATEGIC OBJECTIVE CATALOG (COMPLETE)"):
+    st.dataframe(df_annual, use_container_width=True, hide_index=True)
 
 # Dropdown C: Right KPI Parameters (Full List)
-with st.expander("➡️ [RIGHT PANEL DROPDOWN] — MASTER KEY PERFORMANCE INDICATORS (FULL)"):
+with st.expander("➡️ [RIGHT PANEL DROPDOWN] — MASTER KEY PERFORMANCE INDICATORS & RESPONSIBILITIES (COMPLETE)"):
     st.dataframe(df_kpis, use_container_width=True, hide_index=True)
 
 # Dropdown D: Top Priority Items (Full List)
-with st.expander("⬆️ [TOP PANEL DROPDOWN] — DEPLOYED ACTIONABLE PRIORITIES (FULL)"):
-    for idx, row in df_priorities.iterrows():
-        st.markdown(f"⚡ **{row['Dept']} Focus Group**: {row['Priority']}")
+with st.expander("⬆️ [TOP PANEL DROPDOWN] — DEPLOYED ACTIONABLE PRIORITIES (COMPLETE)"):
+    st.dataframe(df_priorities, use_container_width=True, hide_index=True)
 
 st.markdown("---")
 
@@ -185,19 +198,19 @@ f_col1, f_col2 = st.columns([1, 2])
 
 with f_col1:
     selected_month = st.selectbox("Select Target Operations Month:", ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"])
-    st.markdown("<p style='color:#888888; font-size:13px;'>Modify values below to update month-by-month results:</p>", unsafe_allow_html=True)
+    st.markdown("<p style='color:#888888; font-size:13px;'>Input current operational metrics directly below:</p>", unsafe_allow_html=True)
     
     current_inputs = {}
     for idx, row in df_kpis.iterrows():
         kid = row["KPI_ID"]
         saved_val = st.session_state.monthly_feed[kid]
         if row["Target"] < 1.0:
-            val = st.number_input(f"KPI {kid} ({row['Dept']})", value=float(saved_val), format="%.4f", step=0.001)
+            val = st.number_input(f"KPI {kid} [{row['Dept']}] Actual", value=float(saved_val), format="%.4f", step=0.001)
         else:
-            val = st.number_input(f"KPI {kid} ({row['Dept']})", value=float(saved_val), step=1.0)
+            val = st.number_input(f"KPI {kid} [{row['Dept']}] Actual", value=float(saved_val), step=1.0)
         current_inputs[kid] = val
         
-    # Commit variables back to session cache tracking system
+    # Commit input variables back into runtime tracking memory
     st.session_state.monthly_feed = current_inputs
 
 # Core calculation mechanics block
@@ -213,12 +226,13 @@ df_kpis["Month_Actual"] = df_kpis["KPI_ID"].map(st.session_state.monthly_feed)
 df_kpis["Performance Achievement %"] = df_kpis.apply(compute_isolated_kpi_progress, axis=1)
 
 with f_col2:
-    st.markdown(f"<p style='color:#00FF66; font-weight:bold;'>Performance Graph: {selected_month.upper()} Target Status</p>", unsafe_allow_html=True)
+    st.markdown(f"<p style='color:#00FF66; font-weight:bold;'>Performance Graphs for {selected_month.upper()}</p>", unsafe_allow_html=True)
     
-    # Render progress indicators dynamically per structural KPI entry point
+    # Render progress bars dynamically for every single item inside the KPI master matrix
     for idx, row in df_kpis.iterrows():
         pct = row["Performance Achievement %"]
-        st.markdown(f"**[{row['KPI_ID']}]** {row['Title']} — Status: `Actual: {row['Month_Actual']}` vs `Target: {row['Target']}`")
+        st.markdown(f"**[{row['KPI_ID']}]** {row['Title']} <br><span style='color:#AAAAAA; font-size:12px;'>Responsibility: <b>{row['Dept']} Department</b></span>", unsafe_allow_html=True)
+        st.markdown(f"Status: `Actual: {row['Month_Actual']}` vs `Target: {row['Target']}`")
         st.progress(pct / 120.0)
         st.caption(f"Calculated Performance Achievement Rate: **{pct:.1f}%**")
-        st.markdown("<div style='margin-bottom:12px;'></div>", unsafe_allow_html=True)
+        st.markdown("<div style='margin-bottom:16px;'></div>", unsafe_allow_html=True)
