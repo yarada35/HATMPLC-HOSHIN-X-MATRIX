@@ -9,44 +9,74 @@ st.set_page_config(
     layout="wide"
 )
 
-# --- MATTE BLACK APP SKIN AND EMISSIVE HIGHLIGHT GLOWS ---
+# --- MATTE BLACK APP SKIN AND HIGH-READABILITY EMISSIVE HIGHLIGHT GLOWS ---
 st.markdown("""
     <style>
+    /* Global App Canvas & Core Elements */
     .stApp, [data-testid="stHeader"], header {
         background-color: #000000 !important;
     }
-    p, span, label, th, td, .stMarkdown, h1, h2, h3, h4, li {
+    
+    /* Global Text Visibility & Font Scaling Enforcements */
+    p, span, label, th, td, .stMarkdown, li {
         color: #FFFFFF !important;
+        font-size: 16px !important; /* Increased base body font size */
     }
+    
+    /* Standardized Streamlit DataFrame Interactive Readability Override */
+    div[data-testid="stDataFrame"] td, div[data-testid="stDataFrame"] th {
+        font-size: 15px !important;
+    }
+
+    /* Interactive Dropdown Expander Readability Wrapper */
     .stAccordion {
         background-color: #0B0B0B !important;
-        border: 1px solid #222222 !important;
-        margin-bottom: 10px !important;
+        border: 2px solid #222222 !important;
+        margin-bottom: 12px !important;
     }
-    .glow-white {
-        color: #FFFFFF !important;
-        font-family: 'Courier New', monospace;
-        font-weight: 900;
-        text-shadow: 0 0 10px #FFFFFF, 0 0 15px #888888;
+    .stAccordion button p {
+        font-size: 19px !important; /* Larger text headers on dropdown registers */
+        font-weight: bold !important;
     }
+    
+    /* Corporate Core Pillar Matrix Highlights & Color Scheming */
     .glow-yellow {
         color: #FFFF00 !important;
         font-family: 'Arial Black', sans-serif;
+        font-size: 24px !important;
         font-weight: 900;
         text-shadow: 0 0 10px #FFFF00, 0 0 15px #BBBB00;
-    }
-    .glow-blue {
-        color: #00D2FF !important;
-        font-family: 'Arial Black', sans-serif;
-        font-weight: 900;
-        text-shadow: 0 0 10px #00D2FF, 0 0 15px #006699;
     }
     .glow-red {
         color: #FF3333 !important;
         font-family: 'Arial Black', sans-serif;
+        font-size: 24px !important;
         font-weight: 900;
         text-shadow: 0 0 10px #FF3333, 0 0 15px #990000;
     }
+    .glow-blue {
+        color: #00D2FF !important;
+        font-family: 'Arial Black', sans-serif;
+        font-size: 24px !important;
+        font-weight: 900;
+        text-shadow: 0 0 10px #00D2FF, 0 0 15px #006699;
+    }
+    /* Readable High-Contrast Warm Gold Brown Tone */
+    .glow-brown {
+        color: #E6A15C !important; 
+        font-family: 'Arial Black', sans-serif;
+        font-size: 24px !important;
+        font-weight: 900;
+        text-shadow: 0 0 10px #E6A15C, 0 0 15px #A66F33;
+    }
+    
+    /* Section Custom Identity Labeling Class Callouts */
+    .section-title-yellow { color: #FFFF00 !important; font-size: 22px !important; font-weight: bold !important; }
+    .section-title-red    { color: #FF3333 !important; font-size: 22px !important; font-weight: bold !important; }
+    .section-title-blue   { color: #00D2FF !important; font-size: 22px !important; font-weight: bold !important; }
+    .section-title-brown  { color: #E6A15C !important; font-size: 22px !important; font-weight: bold !important; }
+    
+    /* Layout Organization Grid Components */
     .one-page-matrix {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
@@ -56,9 +86,9 @@ st.markdown("""
     }
     .matrix-card {
         background-color: #0D0D0D;
-        border: 1px solid #333333;
-        border-radius: 6px;
-        padding: 15px;
+        border: 2px solid #333333;
+        border-radius: 8px;
+        padding: 20px;
         text-align: center;
     }
     </style>
@@ -194,23 +224,23 @@ if "monthly_feed" not in st.session_state:
 # =========================================================
 #   APPLICATION INTERFACE HEADS
 # =========================================================
-st.markdown("<h1 style='text-align:center;'>🎯 HORIZON ADDIS TYRE MASTER HOSHIN MANAGEMENT SUITE</h1>", unsafe_allow_html=True)
-st.markdown("<p style='text-align:center; color:#888888;'>Corporate Strategic Alignment System — Unabridged Executive Blueprint View</p>", unsafe_allow_html=True)
-st.markdown("---")
+st.markdown("<h1 style='text-align:center; font-size:36px; color:#FFFF00;'>🎯 HORIZON ADDIS TYRE MASTER HOSHIN MANAGEMENT SUITE</h1>", unsafe_allow_html=True)
+st.markdown("<p style='text-align:center; color:#E6A15C; font-size:18px;'>Corporate Strategic Alignment System — Unabridged Executive Blueprint View</p>", unsafe_allow_html=True)
+st.markdown("<hr style='border:1px solid #333;'>", unsafe_allow_html=True)
 
 # --- 1. OVERARCHING VISUAL REPRESENTATION PANEL ---
-st.markdown("<h3 style='color:#FFFFFF; border-left: 4px solid #00FF66; padding-left:10px;'>📊 GLOBAL CORPORATE HOSHIN PROFILE DIAGRAM</h3>", unsafe_allow_html=True)
+st.markdown("<h3 class='section-title-yellow'>📊 GLOBAL CORPORATE HOSHIN PROFILE DIAGRAM</h3>", unsafe_allow_html=True)
 st.markdown('<div class="one-page-matrix">', unsafe_allow_html=True)
 st.markdown("""
-    <div class="matrix-card" style="border-top: 3px solid #FFFFFF;"><div class="glow-white">SUPPLY CHAIN</div><p style='color:#666; font-size:12px; margin-top:5px;'>Pillar Master Ledger</p></div>
-    <div class="matrix-card" style="border-top: 3px solid #FFFF00;"><div class="glow-yellow">CAPACITY BUILDING</div><p style='color:#666; font-size:12px; margin-top:5px;'>Operational Master Ledger</p></div>
-    <div class="matrix-card" style="border-top: 3px solid #00D2FF;"><div class="glow-blue">COST REDUCTION</div><p style='color:#666; font-size:12px; margin-top:5px;'>Financial Master Ledger</p></div>
-    <div class="matrix-card" style="border-top: 3px solid #FF3333;"><div class="glow-red">SALES & MARKETING</div><p style='color:#666; font-size:12px; margin-top:5px;'>Commercial Master Ledger</p></div>
+    <div class="matrix-card" style="border-top: 4px solid #FFFF00;"><div class="glow-yellow">SUPPLY CHAIN</div><p style='color:#AAAAAA; font-size:14px !important; margin-top:5px;'>Pillar Master Ledger</p></div>
+    <div class="matrix-card" style="border-top: 4px solid #FF3333;"><div class="glow-red">CAPACITY BUILDING</div><p style='color:#AAAAAA; font-size:14px !important; margin-top:5px;'>Operational Master Ledger</p></div>
+    <div class="matrix-card" style="border-top: 4px solid #00D2FF;"><div class="glow-blue">COST REDUCTION</div><p style='color:#AAAAAA; font-size:14px !important; margin-top:5px;'>Financial Master Ledger</p></div>
+    <div class="matrix-card" style="border-top: 4px solid #E6A15C;"><div class="glow-brown">SALES & MARKETING</div><p style='color:#AAAAAA; font-size:14px !important; margin-top:5px;'>Commercial Master Ledger</p></div>
 """, unsafe_allow_html=True)
 st.markdown('</div>', unsafe_allow_html=True)
 
 # --- 2. THE FOUR SEPARATED STRATEGIC DROPDOWN REGISTER EXPANDERS ---
-st.markdown("<h3 style='color:#FFFFFF; border-left: 4px solid #FFFFFF; padding-left:10px;'>📁 COMPLETE STRATEGIC MASTER MATRIX DROPDOWNS</h3>", unsafe_allow_html=True)
+st.markdown("<h3 class='section-title-blue'>📁 COMPLETE STRATEGIC MASTER MATRIX DROPDOWNS</h3>", unsafe_allow_html=True)
 
 with st.expander("⬇️ [BOTTOM PANEL DROPDOWN] — 5 YEAR STRATEGIC LAUNCH LIST (COMPLETE - ALL ROWS)"):
     st.dataframe(df_5yr, use_container_width=True, hide_index=True)
@@ -224,16 +254,16 @@ with st.expander("➡️ [RIGHT PANEL DROPDOWN] — MASTER KEY PERFORMANCE INDIC
 with st.expander("⬆️ [TOP PANEL DROPDOWN] — DEPLOYED ACTIONABLE PRIORITIES (COMPLETE - ALL ROWS)"):
     st.dataframe(df_priorities, use_container_width=True, hide_index=True)
 
-st.markdown("---")
+st.markdown("<hr style='border:1px solid #333;'>", unsafe_allow_html=True)
 
 # --- 3. DYNAMIC DATA INPUT FEED & ENGINE TARGET STATUS PERFORMANCE GRAPH ---
-st.markdown("<h3 style='color:#FFFFFF; border-left: 4px solid #FFFF00; padding-left:10px;'>📆 MONTHLY PERFORMANCE DISPATCH & GRAPH DATA FEEDING</h3>", unsafe_allow_html=True)
+st.markdown("<h3 class='section-title-brown'>📆 MONTHLY PERFORMANCE DISPATCH & GRAPH DATA FEEDING</h3>", unsafe_allow_html=True)
 
 f_col1, f_col2 = st.columns([1, 2])
 
 with f_col1:
     selected_month = st.selectbox("Select Target Operations Month:", ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"])
-    st.markdown("<p style='color:#888888; font-size:13px;'>Input current operational metrics directly below:</p>", unsafe_allow_html=True)
+    st.markdown("<p style='color:#E6A15C; font-size:15px; font-weight:bold;'>Input current operational metrics directly below:</p>", unsafe_allow_html=True)
     
     current_inputs = {}
     for idx, row in df_kpis.iterrows():
@@ -260,19 +290,19 @@ df_kpis["Month_Actual"] = df_kpis["KPI_ID"].map(st.session_state.monthly_feed)
 df_kpis["Performance Achievement %"] = df_kpis.apply(compute_isolated_kpi_progress, axis=1)
 
 with f_col2:
-    st.markdown(f"<p style='color:#00FF66; font-weight:bold; font-size:18px;'>Performance Graphs for {selected_month.upper()}</p>", unsafe_allow_html=True)
+    st.markdown(f"<p style='color:#00FF66; font-weight:bold; font-size:20px;'>Performance Graphs for {selected_month.upper()}</p>", unsafe_allow_html=True)
     
     for idx, row in df_kpis.iterrows():
         pct = row["Performance Achievement %"]
-        st.markdown(f"**[{row['KPI_ID']}]** {row['Title']} <br><span style='color:#00D2FF; font-size:12px;'>Owner Accountability: <b>{row['Dept']} Department</b></span>", unsafe_allow_html=True)
+        st.markdown(f"<span style='font-size:18px !important; font-weight:bold; color:#FFFF00;'>[{row['KPI_ID']}] {row['Title']}</span><br><span style='color:#00D2FF; font-size:14px !important;'>Owner Accountability: <b>{row['Dept']} Department</b></span>", unsafe_allow_html=True)
         st.markdown(f"Status: `Actual: {row['Month_Actual']}` vs `Target: {row['Target']}`")
         st.progress(pct / 120.0)
-        st.caption(f"Calculated Performance Achievement Rate: **{pct:.1f}%**")
-        st.markdown("<div style='border-bottom: 1px dashed #222; margin-bottom:12px;'></div>", unsafe_allow_html=True)
+        st.markdown(f"<span style='font-size:14px !important; color:#E6A15C;'>Calculated Performance Achievement Rate: <b>{pct:.1f}%</b></span>", unsafe_allow_html=True)
+        st.markdown("<div style='border-bottom: 1px dashed #333; margin-bottom:14px;'></div>", unsafe_allow_html=True)
 
 # --- 4. OVERALL COMPANY ACHIEVEMENT PRESENTATION HUB ---
-st.markdown("---")
-st.markdown("<h2 style='text-align:center; color:#FFFF00; border-bottom: 2px solid #222; padding-bottom:10px;'>🏆 GLOBAL COMPANY PERFORMANCE REALIZATION</h2>", unsafe_allow_html=True)
+st.markdown("<hr style='border:1px solid #333;'>", unsafe_allow_html=True)
+st.markdown("<h2 style='text-align:center; color:#FFFF00; border-bottom: 2px solid #222; padding-bottom:10px; font-size:28px;'>🏆 GLOBAL COMPANY PERFORMANCE REALIZATION</h2>", unsafe_allow_html=True)
 
 total_kpis = len(df_kpis)
 average_achievement = df_kpis["Performance Achievement %"].mean() if total_kpis > 0 else 0.0
@@ -282,34 +312,34 @@ col_m1, col_m2, col_m3 = st.columns(3)
 
 with col_m1:
     st.markdown("""
-        <div style='background-color:#0A0A0A; border:1px solid #FF3333; padding:20px; border-radius:8px; text-align:center;'>
-            <h4 style='color:#AAAAAA; margin:0;'>STRATEGIC BOUNDARY TARGET</h4>
-            <h1 style='font-size:48px; color:#FFFFFF; margin:10px 0;'>100.0%</h1>
-            <p style='color:#FF3333; font-size:12px; margin:0;'>Horizon Addis Milestone Base</p>
+        <div style='background-color:#0A0A0A; border:2px solid #FF3333; padding:20px; border-radius:8px; text-align:center;'>
+            <h4 style='color:#FF3333; margin:0; font-size:18px !important; font-weight:bold;'>STRATEGIC BOUNDARY TARGET</h4>
+            <h1 style='font-size:52px !important; color:#FFFFFF; margin:10px 0; font-weight:bold;'>100.0%</h1>
+            <p style='color:#AAAAAA; font-size:14px !important; margin:0;'>Horizon Addis Milestone Base</p>
         </div>
     """, unsafe_allow_html=True)
 
 with col_m2:
-    glow_color = "#00FF66" if average_achievement >= 90.0 else "#FFCC00"
+    glow_color = "#00FF66" if average_achievement >= 90.0 else "#FFFF00"
     st.markdown(f"""
-        <div style='background-color:#0A0A0A; border:1px solid {glow_color}; padding:20px; border-radius:8px; text-align:center;'>
-            <h4 style='color:#AAAAAA; margin:0;'>COMPANY ACTUAL REALIZATION</h4>
-            <h1 style='font-size:48px; color:{glow_color}; margin:10px 0;'>{average_achievement:.2f}%</h1>
-            <p style='color:{glow_color}; font-size:12px; margin:0;'>Combined Operational Velocity</p>
+        <div style='background-color:#0A0A0A; border:2px solid {glow_color}; padding:20px; border-radius:8px; text-align:center;'>
+            <h4 style='color:{glow_color}; margin:0; font-size:18px !important; font-weight:bold;'>COMPANY ACTUAL REALIZATION</h4>
+            <h1 style='font-size:52px !important; color:{glow_color}; margin:10px 0; font-weight:bold;'>{average_achievement:.2f}%</h1>
+            <p style='color:#AAAAAA; font-size:14px !important; margin:0;'>Combined Operational Velocity</p>
         </div>
     """, unsafe_allow_html=True)
 
 with col_m3:
     st.markdown(f"""
-        <div style='background-color:#0A0A0A; border:1px solid #00D2FF; padding:20px; border-radius:8px; text-align:center;'>
-            <h4 style='color:#AAAAAA; margin:0;'>KPI TARGET CLOSURE RATE</h4>
-            <h1 style='font-size:48px; color:#00D2FF; margin:10px 0;'>{targets_achieved} / {total_kpis}</h1>
-            <p style='color:#00D2FF; font-size:12px; margin:0;'>Uncompromised Complete Line Items</p>
+        <div style='background-color:#0A0A0A; border:2px solid #00D2FF; padding:20px; border-radius:8px; text-align:center;'>
+            <h4 style='color:#00D2FF; margin:0; font-size:18px !important; font-weight:bold;'>KPI TARGET CLOSURE RATE</h4>
+            <h1 style='font-size:52px !important; color:#FFFFFF; margin:10px 0; font-weight:bold;'>{targets_achieved} / {total_kpis}</h1>
+            <p style='color:#AAAAAA; font-size:14px !important; margin:0;'>Uncompromised Complete Line Items</p>
         </div>
     """, unsafe_allow_html=True)
 
 st.markdown("<br>", unsafe_allow_html=True)
-st.markdown("<p style='text-align:center; margin-bottom:2px; font-weight:bold;'>Visual Representation: Actual Realization Overlapping Corporate Target Boundary</p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align:center; font-size:18px !important; font-weight:bold; color:#E6A15C;'>Visual Representation: Actual Realization Overlapping Corporate Target Boundary</p>", unsafe_allow_html=True)
 
 st.progress(min(average_achievement / 120.0, 1.0))
-st.markdown(f"<p style='text-align:right; color:#888888; font-size:12px; margin-top:2px;'>Realization Matrix Level Cap: 120% Variance Window</p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align:right; color:#AAAAAA; font-size:13px !important; margin-top:2px;'>Realization Matrix Level Cap: 120% Variance Window</p>", unsafe_allow_html=True)
