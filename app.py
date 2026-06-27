@@ -3,7 +3,7 @@ import pandas as pd
 
 # --- STAGE CONFIGURATION & SOLID BLACK BACKDROP ---
 st.set_page_config(
-    page_title="Horizon Addis Tyre - Hoshin Executive Matrix",
+    page_title="Horizon Addis Tyre - Complete Hoshin Master Suite",
     page_icon="🎯",
     layout="wide"
 )
@@ -53,7 +53,7 @@ st.markdown("""
         text-shadow: 0 0 10px #FF3333, 0 0 15px #990000;
     }
     
-    /* Static Block Styling for Core Diagram Blueprint */
+    /* Core Diagram Blueprint Configuration */
     .one-page-matrix {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
@@ -71,18 +71,22 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# --- COMPLETE RAW REPOSITORY INGESTION ---
+# --- COMPLETE RAW PRODUCTION DATASET POPULATION ---
 @st.cache_data
-def load_complete_unlinked_inventories():
-    # Complete Bottom 5-Year Master Data Strategy List
+def load_absolute_unlinked_inventories():
+    # 1. Complete Bottom 5-Year Master Data Strategy List
     bottom_5yr_raw = [
-        {"ID": "1.1", "Pillar": "Supply Chain Enhancement", "Issue": "የግብዓት አቅርቦትን አስተማማኝ ማድረግ (Reliable Raw Material Supply)"},
-        {"ID": "2.1", "Pillar": "Capacity Building", "Issue": "የሰው ሀብት አቅም ማሳደግና ማምረቻ መሳሪያዎች አጠቃቀም (HR Capacity & Plant Utilization)"},
-        {"ID": "3.1", "Pillar": "Overall Cost Reduction", "Issue": "የምርት ወጪን በከፍተኛ ሁኔታ መቀነስ (Rigorous Production Cost Reduction)"},
-        {"ID": "3.2", "Pillar": "Sales & Marketing", "Issue": "የገበያ ድርሻንና የሽያጭ መረብን ማስፋፋት (Market Share Optimization)"}
+        {"ID": "1.1", "Pillar": "Supply Chain Enhancement", "Strategic Issue / Objective": "የግብዓት አቅርቦትን አስተማማኝ ማድረግ (Reliable Raw Material Supply Pipeline)"},
+        {"ID": "1.2", "Pillar": "Supply Chain Enhancement", "Strategic Issue / Objective": "የሀገር ውስጥ ግብዓቶች አጠቃቀም ማሳደግ (Maximize Local Inbound Sourcing Subcomponents)"},
+        {"ID": "2.1", "Pillar": "Capacity Building", "Strategic Issue / Objective": "የሰው ሀብት አቅም ማሳደግና ማምረቻ መሳሪያዎች አጠቃቀም (Human Resource Capacity & Plant Equipment Utilization)"},
+        {"ID": "2.2", "Pillar": "Capacity Building", "Strategic Issue / Objective": "የዲጂታል ቴክኖሎጂ ትግበራና አውቶሜሽን ማስፋፋት (Digital Technology Infrastructure & Automation Expansion)"},
+        {"ID": "3.1", "Pillar": "Overall Cost Reduction", "Strategic Issue / Objective": "የምርት ወጪን በከፍተኛ ሁኔታ መቀነስ (Rigorous Production Cost Reduction Framework)"},
+        {"ID": "3.2", "Pillar": "Overall Cost Reduction", "Strategic Issue / Objective": "የሃይልና የፍጆታ አጠቃቀም ብክነትን ማስወገድ (Eliminate Energy Utility & Waste Inefficiencies)"},
+        {"ID": "4.1", "Pillar": "Sales & Marketing", "Strategic Issue / Objective": "የገበያ ድርሻንና የሽያጭ መረብን ማስፋፋት (Market Share Optimization & Commercial Reach)"},
+        {"ID": "4.2", "Pillar": "Sales & Marketing", "Strategic Issue / Objective": "የብራንድ ተወዳዳሪነትንና የደንበኞች እርካታን ማረጋገጥ (Brand Competitiveness & Customer Satisfaction Systems)"}
     ]
     
-    # Complete Left Annual Objective Data List
+    # 2. Complete Left Annual Objective Data List
     left_annual_raw = [
         {"ID": "1.1.1", "Objective": "ለሶስት ወር ምርት የሚበቃ ጥሬ ዕቃ በክምችትና በግዢ ሂደት እንዲኖር ማድረግን ከ27.7% ወደ 95% ማሳደግ"},
         {"ID": "1.1.2", "Objective": "የመለዋወጫ አቅርቦት ጊዜ ከ115 ቀን ወደ 21 ቀናት ዝቅ ማድረግ"},
@@ -92,38 +96,44 @@ def load_complete_unlinked_inventories():
         {"ID": "2.1.1", "Objective": "የሠራተኛውን አፈጻጸም ከ82 በመቶ ወደ 95 በመቶ ማሳደግ"},
         {"ID": "2.1.2", "Objective": "የሠራተኛው ዕርካታ (employee satisfaction) ከ75% ወደ 95% ማሳደግ"},
         {"ID": "2.1.3", "Objective": "የሠራተኛው የሥራ ተነሳሽነትና የባለቤትነት ስሜት (employee engagement) ከ60% ወደ 85% ማሳደግ"},
-        {"ID": "3.1.7", "Objective": "የፈርነስ ፍጆታን (ቶን/ቶን) ከ 0.56 ወደ 0.25 መቀነስ"},
-        {"ID": "3.1.8", "Objective": "ኤሌክትሪክ ፍጆታን በ (KWH/ton) ከ 1529 ወደ 1200 መቀነስ"},
-        {"ID": "3.2.2", "Objective": "የክሌም ወጪን ከ 0.006% ወደ 0.003% መቀነስ"}
+        {"ID": "3.1.1", "Objective": "የፈርነስ ፍጆታን (ቶን/ቶን) ከ 0.56 ወደ 0.25 መቀነስ"},
+        {"ID": "3.1.2", "Objective": "ኤሌክትሪክ ፍጆታን በ (KWH/ton) ከ 1529 ወደ 1200 መቀነስ"},
+        {"ID": "4.1.1", "Objective": "የክሌም ወጪን ከ 0.006% ወደ 0.003% መቀነስ"},
+        {"ID": "4.1.2", "Objective": "የሀገር ውስጥ የገበያ ድርሻን ከ 45% ወደ 60% ማሳደግ"}
     ]
     
-    # Complete Right Live KPI Data List Registry
+    # 3. Complete Right Live KPI Data List Registry
     right_kpis_raw = [
         {"KPI_ID": "1.1.1", "Pillar": "Supply Chain Enhancement", "Title": "Raw Material Stock Inventory Pipeline Coverage", "Target": 0.95, "Direction": "Up", "Dept": "Purchase"},
         {"KPI_ID": "1.1.2", "Pillar": "Supply Chain Enhancement", "Title": "Spare Parts Inbound Lead Time Index", "Target": 21.0, "Direction": "Down", "Dept": "Plant Engineering"},
+        {"KPI_ID": "1.1.5", "Pillar": "Supply Chain Enhancement", "Title": "Furnace Oil Supply Availability Rate", "Target": 1.00, "Direction": "Up", "Dept": "Purchase"},
         {"KPI_ID": "2.1.1", "Pillar": "Capacity Building", "Title": "Workforce Operational Performance Efficiency", "Target": 0.95, "Direction": "Up", "Dept": "HR"},
-        {"KPI_ID": "3.1.7", "Pillar": "Overall Cost Reduction", "Title": "Furnace Fuel Consumption Ratio (Tons/Ton)", "Target": 0.25, "Direction": "Down", "Dept": "Production"},
-        {"KPI_ID": "3.1.8", "Pillar": "Overall Cost Reduction", "Title": "Electrical Energy Utility Index (KWH/Ton)", "Target": 1200.0, "Direction": "Down", "Dept": "Plant Engineering"},
-        {"KPI_ID": "3.2.2", "Pillar": "Sales & Marketing", "Title": "Commercial Product Warranty Claim Defect Cost Ratio", "Target": 0.003, "Direction": "Down", "Dept": "PIQA"}
+        {"KPI_ID": "2.1.2", "Pillar": "Capacity Building", "Title": "Employee Overall Factory Satisfaction Survey Score", "Target": 0.95, "Direction": "Up", "Dept": "HR"},
+        {"KPI_ID": "3.1.1", "Pillar": "Overall Cost Reduction", "Title": "Furnace Fuel Consumption Ratio (Tons/Ton)", "Target": 0.25, "Direction": "Down", "Dept": "Production"},
+        {"KPI_ID": "3.1.2", "Pillar": "Overall Cost Reduction", "Title": "Electrical Energy Utility Index (KWH/Ton)", "Target": 1200.0, "Direction": "Down", "Dept": "Plant Engineering"},
+        {"KPI_ID": "4.1.1", "Pillar": "Sales & Marketing", "Title": "Commercial Product Warranty Claim Defect Cost Ratio", "Target": 0.003, "Direction": "Down", "Dept": "PIQA"},
+        {"KPI_ID": "4.1.2", "Pillar": "Sales & Marketing", "Title": "Domestic Market Penetration Index Share", "Target": 0.60, "Direction": "Up", "Dept": "Sales"}
     ]
     
-    # Complete Top Priorities Deployment Data List
+    # 4. Complete Top Priorities Deployment Data List
     top_priorities_raw = [
-        {"Dept": "Purchase & PIQA", "Priority": "አምራች አቅራቢዎችን ለይቶ ማወቅ፣ የተሻሉትን መምረጥና በአካል ሄዶ ማነጋገር"},
-        {"Dept": "Top Mgt & Finance", "Priority": "ከፍተኛ ክትትል በማድረግና አዋጭነትን በማመዛዘን የውጭ ምንዛሪ ግኝትን ማመቻቸት"},
-        {"Dept": "Plant Engineering", "Priority": "ለማምረቻ መሣሪዎች፣ መገልገያዎችና መለዋወጫዎች ትክለኛውን ስፔሲፊኬሽን በወቅቱ ማቅረብ"},
-        {"Dept": "Production", "Priority": "የሃይል አጠቃቀምን በየዕለቱ መከታተልና አላስፈላጊ ብክነትን ሙሉ በሙሉ ማስወገድ"},
-        {"Dept": "Commercial Operations", "Priority": "የገበያ ስለላ (market intelligence) ስራን ማጠናከርና የሽያጭ ኔትወርክን ማስፋፋት"}
+        {"Dept": "Purchase & PIQA", "Priority": "አምራች አቅራቢዎችን ለይቶ ማወቅ፣ የተሻሉትን መምረጥና በአካል ሄዶ ማነጋገር (Sourcing Validation)"},
+        {"Dept": "Top Mgt & Finance", "Priority": "ከፍተኛ ክትትል በማድረግና አዋጭነትን በማመዛዘን የውጭ ምንዛሪ ግኝትን ማመቻጸት (FX Liquidity Management)"},
+        {"Dept": "Plant Engineering", "Priority": "ለማምረቻ መሣሪዎች፣ መገልገያዎችና መለዋወጫዎች ትክለኛውን ስፔሲፊኬሽን በወቅቱ ማቅረብ (Technical Standardization)"},
+        {"Dept": "Production", "Priority": "የሃይል አጠቃቀምን በየዕለቱ መከታተልና አላስፈላጊ ብክነትን ሙሉ በሙሉ ማስወገድ (Lean Utility Tracking)"},
+        {"Dept": "Commercial Operations", "Priority": "የገበያ ስለላ (market intelligence) ስራን ማጠናከርና የሽያጭ ኔትወርክን ማስፋፋት (Commercial Network Expansion)"},
+        {"Dept": "HR & Admin", "Priority": "የክህሎት ክፍተቶችን መለየትና ያተኮሩ ተግባራዊ ስልጠናዎችን መስጠት (Targeted Capacity Development)"}
     ]
     
     return pd.DataFrame(bottom_5yr_raw), pd.DataFrame(left_annual_raw), pd.DataFrame(right_kpis_raw), pd.DataFrame(top_priorities_raw)
 
-df_5yr, df_annual, df_kpis, df_priorities = load_complete_unlinked_inventories()
+df_5yr, df_annual, df_kpis, df_priorities = load_absolute_unlinked_inventories()
 
-# --- INITIALIZE MULTI-MONTH PERSISTENT MEMORY ARRAYS ---
+# --- INITIALIZE MULTI-MONTH STATE TRACKING ARRAY ---
 if "monthly_feed" not in st.session_state:
     st.session_state.monthly_feed = {
-        "1.1.1": 0.55, "1.1.2": 72.0, "2.1.1": 0.84, "3.1.7": 0.42, "3.1.8": 1410.0, "3.2.2": 0.005
+        "1.1.1": 0.55, "1.1.2": 72.0, "1.1.5": 0.85, "2.1.1": 0.84, "2.1.2": 0.78, 
+        "3.1.1": 0.42, "3.1.2": 1410.0, "4.1.1": 0.005, "4.1.2": 0.48
     }
 
 # =========================================================
@@ -146,23 +156,23 @@ st.markdown("""
 st.markdown('</div>', unsafe_allow_html=True)
 
 # --- 2. ISOLATED DROP-DOWN MASTER LISTS REGISTER ---
-st.markdown("<h3 style='color:#FFFFFF; border-left: 4px solid #FFFFFF; padding-left:10px;'>📁 STRATEGIC MASTER MATRIX DROPDOWNS</h3>", unsafe_allow_html=True)
+st.markdown("<h3 style='color:#FFFFFF; border-left: 4px solid #FFFFFF; padding-left:10px;'>📁 FULL STRATEGIC MASTER MATRIX DROPDOWNS</h3>", unsafe_allow_html=True)
 
-# Dropdown A: Bottom 5-Year Plan
-with st.expander("⬇️ [BOTTOM PANEL DROPDOWN] — 5 YEAR STRATEGIC LAUNCH LIST"):
-    st.table(df_5yr)
+# Dropdown A: Bottom 5-Year Plan (Full List)
+with st.expander("⬇️ [BOTTOM PANEL DROPDOWN] — 5 YEAR STRATEGIC LAUNCH LIST (FULL)"):
+    st.dataframe(df_5yr, use_container_width=True, hide_index=True)
 
-# Dropdown B: Left Annual Objectives
-with st.expander("⬅️ [LEFT PANEL DROPDOWN] — ANNUAL STRATEGIC OBJECTIVE CATALOG"):
+# Dropdown B: Left Annual Objectives (Full List)
+with st.expander("⬅️ [LEFT PANEL DROPDOWN] — ANNUAL STRATEGIC OBJECTIVE CATALOG (FULL)"):
     for idx, row in df_annual.iterrows():
-        st.markdown(f"**Item ID {row['ID']}**: {row['Objective']}")
+        st.markdown(f"📌 **Item ID {row['ID']}**: {row['Objective']}")
 
-# Dropdown C: Right KPI Parameters
-with st.expander("➡️ [RIGHT PANEL DROPDOWN] — MASTER KEY PERFORMANCE INDICATORS):"):
+# Dropdown C: Right KPI Parameters (Full List)
+with st.expander("➡️ [RIGHT PANEL DROPDOWN] — MASTER KEY PERFORMANCE INDICATORS (FULL)"):
     st.dataframe(df_kpis, use_container_width=True, hide_index=True)
 
-# Dropdown D: Top Priority Items
-with st.expander("⬆️ [TOP PANEL DROPDOWN] — DEPLOYED ACTIONABLE PRIORITIES"):
+# Dropdown D: Top Priority Items (Full List)
+with st.expander("⬆️ [TOP PANEL DROPDOWN] — DEPLOYED ACTIONABLE PRIORITIES (FULL)"):
     for idx, row in df_priorities.iterrows():
         st.markdown(f"⚡ **{row['Dept']} Focus Group**: {row['Priority']}")
 
@@ -187,10 +197,10 @@ with f_col1:
             val = st.number_input(f"KPI {kid} ({row['Dept']})", value=float(saved_val), step=1.0)
         current_inputs[kid] = val
         
-    # Commit variables back to cache tracking system
+    # Commit variables back to session cache tracking system
     st.session_state.monthly_feed = current_inputs
 
-# Core evaluation calculations block
+# Core calculation mechanics block
 def compute_isolated_kpi_progress(row):
     actual_val = st.session_state.monthly_feed[row["KPI_ID"]]
     target_val = row["Target"]
