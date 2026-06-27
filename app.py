@@ -45,15 +45,15 @@ st.markdown("""
         color: #FFFF00 !important;
     }
     
-    /* YOUTUBE STYLE DROPDOWN ARROW COLOR OVERRIDE */
+    /* HIGH-CONTRAST RED ARROW WITH OPTIMAL GROUND COMPATIBILITY */
     .stAccordion button svg {
-        background-color: #FF0000 !important; /* YouTube Red Background */
-        fill: #FFFFFF !important;             /* Crisp White Arrow */
-        color: #FFFFFF !important;            /* Crisp White Arrow Color Edge */
-        border-radius: 6px !important;        /* Smooth Rounded Button Corners */
-        padding: 4px !important;              /* Button Internal Spacing Padding */
-        width: 28px !important;               /* Scaled Width */
-        height: 28px !important;              /* Scaled Height */
+        background-color: #FFFFFF !important; /* Pure White background box for maximum contrast ground compatibility */
+        fill: #FF0000 !important;             /* Vibrant YouTube Red Chevron Arrow Symbol */
+        color: #FF0000 !important;            /* Vibrant YouTube Red Chevron Arrow Line Edge */
+        border-radius: 6px !important;        /* Clean rounded button framing */
+        padding: 4px !important;              /* Perfect spacing layout around the symbol */
+        width: 28px !important;               /* Amplified width for quick visibility */
+        height: 28px !important;              /* Amplified height for quick visibility */
     }
     
     /* Corporate Core Pillar Matrix Highlights & Color Scheming */
