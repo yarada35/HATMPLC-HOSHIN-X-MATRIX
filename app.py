@@ -269,3 +269,47 @@ with f_col2:
         st.progress(pct / 120.0)
         st.caption(f"Calculated Performance Achievement Rate: **{pct:.1f}%**")
         st.markdown("<div style='border-bottom: 1px dashed #222; margin-bottom:12px;'></div>", unsafe_allow_html=True)
+
+# --- 4. OVERALL COMPANY ACHIEVEMENT PRESENTATION HUB ---
+st.markdown("---")
+st.markdown("<h2 style='text-align:center; color:#FFFF00; border-bottom: 2px solid #222; padding-bottom:10px;'>🏆 GLOBAL COMPANY PERFORMANCE REALIZATION</h2>", unsafe_allow_html=True)
+
+total_kpis = len(df_kpis)
+average_achievement = df_kpis["Performance Achievement %"].mean() if total_kpis > 0 else 0.0
+targets_achieved = len(df_kpis[df_kpis["Performance Achievement %"] >= 100.0])
+
+col_m1, col_m2, col_m3 = st.columns(3)
+
+with col_m1:
+    st.markdown("""
+        <div style='background-color:#0A0A0A; border:1px solid #FF3333; padding:20px; border-radius:8px; text-align:center;'>
+            <h4 style='color:#AAAAAA; margin:0;'>STRATEGIC BOUNDARY TARGET</h4>
+            <h1 style='font-size:48px; color:#FFFFFF; margin:10px 0;'>100.0%</h1>
+            <p style='color:#FF3333; font-size:12px; margin:0;'>Horizon Addis Milestone Base</p>
+        </div>
+    """, unsafe_allow_html=True)
+
+with col_m2:
+    glow_color = "#00FF66" if average_achievement >= 90.0 else "#FFCC00"
+    st.markdown(f"""
+        <div style='background-color:#0A0A0A; border:1px solid {glow_color}; padding:20px; border-radius:8px; text-align:center;'>
+            <h4 style='color:#AAAAAA; margin:0;'>COMPANY ACTUAL REALIZATION</h4>
+            <h1 style='font-size:48px; color:{glow_color}; margin:10px 0;'>{average_achievement:.2f}%</h1>
+            <p style='color:{glow_color}; font-size:12px; margin:0;'>Combined Operational Velocity</p>
+        </div>
+    """, unsafe_allow_html=True)
+
+with col_m3:
+    st.markdown(f"""
+        <div style='background-color:#0A0A0A; border:1px solid #00D2FF; padding:20px; border-radius:8px; text-align:center;'>
+            <h4 style='color:#AAAAAA; margin:0;'>KPI TARGET CLOSURE RATE</h4>
+            <h1 style='font-size:48px; color:#00D2FF; margin:10px 0;'>{targets_achieved} / {total_kpis}</h1>
+            <p style='color:#00D2FF; font-size:12px; margin:0;'>Uncompromised Complete Line Items</p>
+        </div>
+    """, unsafe_allow_html=True)
+
+st.markdown("<br>", unsafe_allow_html=True)
+st.markdown("<p style='text-align:center; margin-bottom:2px; font-weight:bold;'>Visual Representation: Actual Realization Overlapping Corporate Target Boundary</p>", unsafe_allow_html=True)
+
+st.progress(min(average_achievement / 120.0, 1.0))
+st.markdown(f"<p style='text-align:right; color:#888888; font-size:12px; margin-top:2px;'>Realization Matrix Level Cap: 120% Variance Window</p>", unsafe_allow_html=True)
