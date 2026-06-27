@@ -45,6 +45,17 @@ st.markdown("""
         color: #FFFF00 !important;
     }
     
+    /* YOUTUBE STYLE DROPDOWN ARROW COLOR OVERRIDE */
+    .stAccordion button svg {
+        background-color: #FF0000 !important; /* YouTube Red Background */
+        fill: #FFFFFF !important;             /* Crisp White Arrow */
+        color: #FFFFFF !important;            /* Crisp White Arrow Color Edge */
+        border-radius: 6px !important;        /* Smooth Rounded Button Corners */
+        padding: 4px !important;              /* Button Internal Spacing Padding */
+        width: 28px !important;               /* Scaled Width */
+        height: 28px !important;              /* Scaled Height */
+    }
+    
     /* Corporate Core Pillar Matrix Highlights & Color Scheming */
     .glow-yellow {
         color: #FFFF00 !important;
