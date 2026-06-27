@@ -64,26 +64,22 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# --- COMPLETELY POPULATED PARSING REPOSITORY Engine ---
+# --- COMPLETE UNABRIDGED ARRAYS LOADING ENGINE ---
 @st.cache_data
 def load_all_four_panels_completely():
-    # File 1: 5 Year Strategy Bottom Full Data Ingestion
+    # File 1: Bottom Panel - Complete 5 Year Strategy List
     csv_5yr = """ID,Pillar,Strategic Issue / Objective
-1,አስተማማኝ አቅርቦት እንዲኖር ማድረግ,የግብዓት አቅርቦትን አስተማማኝ ማድረግ
 1.1,Supply Chain Enhancement,የግብዓት አቅርቦትን አስተማማኝ ማድረግ (Reliable Raw Material Supply Pipeline)
-1.1.1,Supply Chain Enhancement,ለሶስት ወር ምርት የሚበቃ ጥሬ ዕቃ በክምችትና በግዢ ሂደት እንዲኖር ማድረግን ከ27.7% ወደ 95% ማሳደግ
+1.1.1,Supply Chain Enhancement,ለሶስት ወር ምርት የሚበቃ ጥሬ ዕቃ በክምችትና ለሶስት ወር ምርት የሚበቃ ጥሬ ዕቃ በግዢ ሂደት እንዲኖር ማድረግን ከ27.7% ወደ 95% ማሳደግ
 1.1.2,Supply Chain Enhancement,የመለዋወጫ አቅርቦት ጊዜ ከ115 ቀን ወደ 21 ቀናት ዝቅ ማድረግ
 1.1.3,Supply Chain Enhancement,ለማሻሻያ ፕሮጀክት የሚሆኑ የማምረቻ መሳሪያዎች 100% በወቅቱ ማቅረብ
 1.1.4,Supply Chain Enhancement,ከአምራቾች የሚገዛውን ጥሬ ዕቃ (በአቅራቢዎች ቁጥር) ከ 63% ወደ 80% ማሳደግ
 1.1.5,Supply Chain Enhancement,የፈርነስ ዘይት አቅርቦት 100% እንዲሆን ማድረግ
-2,ተጨማሪ አቅም መፍጠርና አቅም አጠቃቀምን ማሳደግ,የሰው ሀብት አቅም ማሳደግ
 2.1,Capacity Building,የሰው ሀብት አቅም ማሳደግ (Human Resource Capacity & Plant Equipment Utilization)
 2.1.1,Capacity Building,የሠራተኛውን አፈጻጸም ከ82 በመቶ ወደ 95 በመቶ ማሳደግ
 2.1.2,Capacity Building,የሠራተኛው ዕርካታ (employee sateisfaction) ከ75% ወደ 95% ማሳደግ
 2.1.3,Capacity Building,የሠራተኛው የሥራ ተነሳሽነትና የባለቤትነት ስሜት (employee engagement) ከ60% ወደ 85% ማሳደግ
 2.1.4,Capacity Building,የሠራተኛ ፍልሰትን ከ7.6% ወደ 3.5% ዝቅ ማድረግ
-2.2,Capacity Building,የዲጂታል ቴክኖሎጂ ትግበራና አውቶሜሽን ማስፋፋት
-3,ወጪን መቀነስና የምርት ጥራትን ማሻሻል,የምርት ወጪን በከፍተኛ ሁኔታ መቀነስ
 3.1,Overall Cost Reduction,የምርት ወጪን በከፍተኛ ሁኔታ መቀነስ (Rigorous Production Cost Reduction Framework)
 3.1.1,Overall Cost Reduction,የማምረቻ ማሽኖች ብቃት (OEE) ከ74% ወደ 85% ማሳደግ
 3.1.2,Overall Cost Reduction,የምርት ብክነትን ከ5.8% ወደ 3.5% መቀነስ
@@ -97,16 +93,18 @@ def load_all_four_panels_completely():
 3.1.10,Overall Cost Reduction,በውጪ ህክምና ተቋማት የሚሰጠውን የህመም ፈቃድ ቀናት ከ 2329 የሰው ቀናት ወደ 1164 የሰው ቀናት መቀነስ
 3.1.11,Overall Cost Reduction,የግባት ወጪን እስከ 5% መቀነስ
 3.1.12,Overall Cost Reduction,የሽያጭ ኮሚሽን ከጠቅላላ ሽያጭ ከ 7% ወደ 5% መቀነስ
-3.2,Overall Cost Reduction,የምርተ ጥራትን ማሻሻል
 3.2.1,Overall Cost Reduction,የአዳዲስ ምረተ የጥራት ወጪን ከ 6 ዙር ወደ 4 ዙር መቀነስ
 3.2.2,Overall Cost Reduction,የክሌም ወጪን ከ 0.006% ወደ 0.003% መቀነስ
 3.2.4,Overall Cost Reduction,የጥሬ ዕቃ ማሸጊያ እና ጥራትን ከ 95% ወደ 100% ማሳደግ
-3.3,Overall Cost Reduction,ከምርት ጋር ቀጥተኛ ግንኙነት የሌላቸውን ወጪዎች መቀነስ
-3.3.1,Overall Cost Reduction,የባንከ ወለድ ወጢን ከ 5% እንዳይበልጥ ማድረግ"""
+3.3.1,Overall Cost Reduction,የባንከ ወለድ ወጢን ከ 5% እንዳይበልጥ ማድረግ
+4.1.1,Sales & Market Enhancement,የሀገር ውስጥ የገበያ ድርሻን ከ 45% ወደ 60% ማሳደግ
+4.1.2,Sales & Market Enhancement,የውጭ ሀገር ወጪ ንግድ (Export Sales) በ 25% ማሳደግ
+4.1.3,Sales & Market Enhancement,አዳዲስ ስትራቴጂካዊ የሽያጭ መረቦችንና የጎማ ማከፋፈያ መንገዶችን በየክልሉ መዘርጋት
+4.1.4,Sales & Market Enhancement,የብራንድ ተወዳዳሪነትንና የማስተዋወቅ ስራዎችን በሚዲያ ማሳደግ"""
 
-    # File 2: Left Annual Objectives Full Ingestion
+    # File 2: Left Panel - Complete Annual Objectives List
     csv_annual = """ID,Objective,Weight
-1.1.1,ለሶስት ወር ምርት የሚበቃ ጥሬ ዕቃ በክምችትና ለሶስት ወር ምርት የሚበቃ ጥሬ ዕቃ በግዢ ሂደት እንዲኖር ማድረግን ከ27.7% ወደ 95% ማሳደግ,4
+1.1.1,ለሶስት ወር ምርት የሚበቃ ጥሬ ዕቃ በክምችትና በግዢ ሂደት እንዲኖር ማድረግን ከ27.7% ወደ 95% ማሳደግ,4
 1.1.2,የመለዋወጫ አቅርቦት ጊዜ ከ115 ቀን ወደ 21 ቀናት ዝቅ ማድረግ,2
 1.1.3,ለማሻሻያ ፕሮጀክት የሚሆኑ የማምረቻ መሳሪያዎች 100% በወቅቱ ማቅረብ,6
 1.1.4,ከአምራቾች የሚገዛውን ጥሬ ዕቃ (በአቅራቢዎች ቁጥር) ከ 63% ወደ 80% ማሳደግ,6
@@ -129,9 +127,12 @@ def load_all_four_panels_completely():
 3.1.12,የሽያጭ ኮሚሽን ከጠቅላላ ሽያጭ ከ 7% ወደ 5% መቀነስ,2
 3.2.1,የአዳዲስ ምረተ የጥራት ወጪን ከ 6 ዙር ወደ 4 ዙር መቀነስ,1
 3.2.2,የክሌም ወጪን ከ 0.006% ወደ 0.003% መቀነስ,1
-3.2.4,የጥሬ ዕቃ ማሸጊያ እና ጥራትን ከ 95% ወደ 100% ማሳደግ,1"""
+3.2.4,የጥሬ ዕቃ ማሸጊያ እና ጥራትን ከ 95% ወደ 100% ማሳደግ,1
+4.1.1,የሀገር ውስጥ የገበያ ድርሻን ከ 45% ወደ 60% ማሳደግ,5
+4.1.2,የውጭ ሀገር ወጪ ንግድ (Export Sales) በ 25% ማሳደግ,4
+4.1.3,የደንበኞችን እርካታ ማሳደግና ወቅታዊ የገበያ ጥናቶችን ማጠናከር,3"""
 
-    # File 3: Right KPI Parameters and Department Responsibilities Full Ingestion
+    # File 3: Right Panel - Complete Annual KPI List with Target & Department Responsibilities
     csv_kpis = """KPI_ID,Title,Target,Direction,Dept
 1.1.1,Raw Material Stock Inventory Pipeline Coverage,0.95,Up,Purchase
 1.1.2,Spare Parts Inbound Lead Time Index (Days),21.0,Down,PE
@@ -161,17 +162,21 @@ def load_all_four_panels_completely():
 3.3.2,Customs Storage and Demurrage Operational Waste Outlay,0.0,Down,PURCHASE
 3.3.3,Obsolete Spare Parts Dead Stock Liquidation Index,0.20,Down,SALES AND MARKETING
 3.3.4,First-In First-Out (FIFO) Inventory Control Implementation,1.0,Up,PMITS
-3.3.5,Tire Rotation and Inventory Lifespan Optimization Index,1.0,Up,PRODUCTION"""
+3.3.5,Tire Rotation and Inventory Lifespan Optimization Index,1.0,Up,PRODUCTION
+4.1.1,Domestic Market Share Penetration Index,0.60,Up,SALES AND MARKETING
+4.1.2,Export Sales Volume Expansion Rate,0.25,Up,SALES AND MARKETING
+4.1.3,Strategic Customer Survey Satisfaction Rating Index,0.95,Up,SALES AND MARKETING
+4.1.4,Brand Awareness Promotion Campaign Reach Matrix,1.0,Up,SALES AND MARKETING"""
 
-    # File 4: Top Prioritized Activities Full Ingestion
+    # File 4: Top Panel - Complete Prioritized Activities List
     csv_priorities = """ID,Priority,Dept
-1.1.3,"• ከፍተኛ ክትትል በማድረግና አዋጭነትን በማመዛዘን የውጭ ምንዛሪ ግኝትን ማመቻቸት\n• የኢንቨስትሜንት ጥያቄ ፈጣን ውሳኔ እንዲያገኝ ማድረግ\n• ለማምረቻ መሣሪዎች፣ መገልገያዎችና መለዋወጫዎች ትክለኛውን ስፔሲፊኬሽን በወቅቱ ማቅረብና ከአቅራቢዎች ለሚነሱ ቴክኒካል ጥያቄዎች ሁሉ አስፈላጊወን ምላሽ መስጠት\n• የመለዋጫ ግዢ ዕቅድን በመጠንና በቅደም ተከተል በመለየት ማቅረብ፡፡ለየማሽኑ የመለዋወጫ ፍጆታን በመተንተን አላስፈላጊ ግዢ ሊቀር የሚያስችል የመረጃ ግብአት መስጠት፡፡",Top Mgt & Finance
-1.1.4,"• አምራች አቅራቢዎችን ለይቶ ማወቅ፣ የተሻሉትን መምረጥና በአካል ሄዶ በማግኘት ጭምር አስተማማኝ ግንኙነት መፍጠር\n• ለግዥ ስፔሲፊኬሽኖችን በመስጠትና ጥሬ ዕቃዎች ሲመጡ ፍተሻ በማድረግ ጥራታቸውን ማረጋገጥ",Purchase & PIQA
-1.1.1,"• የምርት ዕቅድ፣ የክምችት መጠንና እና ጥሬ ዕቃውን ለማስመጣት የሚፈጀውን ጊዜ ያገናዘበ ዝርዝር የግዥ ዕቅድ ማውጣት\n• የዕለት ተዕለት የጥሬ ዕቃ ግዥ ሁኔታን በቅርብ መከታተልና ችግሮች ሲያጋጥሙ ፈጣን ውሳኔ መስጠት",Purchase
-2.1.1,"• የሠራተኛውን አቅም ለመገንባት የሚያስችሉ ስልጠናዎችን በጥናት ላይ ተመስርቶ ማዘጋጀትና መስጠት\n• የሠራተኞችን የሥራ አፈጻጸም ምዘና ሥርዓት ማሻሻልና ማጠናከር",HR
-3.1.1,"• የማሽነሪዎችን ዕለታዊና ሳምንታዊ የመከላከያ ጥገና (Preventive Maintenance) በዕቅድ መሠረት መፈፀሙን ማረጋገጥ\n• የማምረቻ መሳሪያዎች ብቃት ላይ ተጽዕኖ የሚያሳድሩ ማነቆዎችን መለየትና የዕድሳት ሥራዎችን ማከናወን",PRODUCTION
+1.1.3,"• ከፍተኛ ክትትል በማድረግና አዋጭነትን በማመዛዘን የውጭ ምንዛሪ ግኝትን ማመቻቸት\n• ለማምረቻ መሣሪዎች ትክለኛውን ስፔሲፊኬሽን በወቅቱ ማቅረብ",Top Mgt & Finance
+1.1.4,"• አምራች አቅራቢዎችን ለይቶ ማወቅ፣ የተሻሉትን መምረጥና በአካል ሄዶ ማነጋገር\n• ጥሬ ዕቃዎች ሲመጡ ፍተሻ በማድረግ ጥራታቸውን ማረጋገጥ",Purchase & PIQA
+1.1.1,"• የምርት ዕቅድ፣ የክምችት መጠንና የዕለት ተዕለት የጥሬ ዕቃ ሁኔታን በቅርብ መከታተል",Purchase
+2.1.1,"• የሠራተኛውን አቅም ለመገንባት የሚያስችሉ ስልጠናዎችን በጥናት ላይ ተመስርቶ ማዘጋጀትና መስጠት",HR
+3.1.1,"• የማሽነሪዎችን ዕለታዊና ሳምንታዊ የመከላከያ ጥገና (Preventive Maintenance) ማረጋገጥ",PRODUCTION
 3.1.7,"• የኃይል አጠቃቀምንና ፍጆታን በየዕለቱ በጥብቅ መከታተልና አላስፈላጊ የሃይል ብክነቶችን ሙሉ በሙሉ ማስወገድ",PRODUCTION
-4.1.2,"• ወቅታዊ የገበያ ጥናት በማካሄድ እንዲሁም አከፋፋዮቻችን ከቸርቻሪዎች ጋር የሚሰሩበትን መንገድ በመፍጠር አቅማቸውን ማሳደግ፡፡\n• የገበያውን ሁኔታ ግምት ውስጥ በማስገባት የሽያጭ ፖሊሲን ማስተካከል።\n• የገበያ ስለላ (market intelligence) ስራን ማጠናከር፡፡",SALES AND MARKETING"""
+4.1.1,"• ወቅታዊ የገበያ ጥናት በማካሄድ ማከፋፈያ መንገዶችን በየክልሉ መዘርጋትና ዘላቂ ግንኙነት መፍጠር\n• ተገቢውን ሚዲያ በመጠቀም ምርት እና አገልግሎቶችን በአግባቡ ማስተዋወቅ\n• የገበያ ስለላ (market intelligence) ስራን ማጠናከር",SALES AND MARKETING"""
 
     df_5yr = pd.read_csv(io.StringIO(csv_5yr))
     df_annual = pd.read_csv(io.StringIO(csv_annual))
@@ -182,12 +187,12 @@ def load_all_four_panels_completely():
 
 df_5yr, df_annual, df_kpis, df_priorities = load_all_four_panels_completely()
 
-# --- INSTANTIATE PERSISTENT STORAGE MEMORY FOR ALL LOADED COMPONENT METRICS ---
+# --- INSTANTIATE PERSISTENT TRACKING MEMORY FOR EVERY LOADED METRIC ---
 if "monthly_feed" not in st.session_state:
     st.session_state.monthly_feed = {row["KPI_ID"]: float(row["Target"]) for idx, row in df_kpis.iterrows()}
 
 # =========================================================
-#   APPLICATION VIEW PORT DISPATCH RENDERERS
+#   APPLICATION INTERFACE HEADS
 # =========================================================
 st.markdown("<h1 style='text-align:center;'>🎯 HORIZON ADDIS TYRE MASTER HOSHIN MANAGEMENT SUITE</h1>", unsafe_allow_html=True)
 st.markdown("<p style='text-align:center; color:#888888;'>Corporate Strategic Alignment System — Unabridged Executive Blueprint View</p>", unsafe_allow_html=True)
